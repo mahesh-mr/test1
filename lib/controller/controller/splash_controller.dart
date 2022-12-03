@@ -1,7 +1,9 @@
-import 'package:fps/view/screens/main/widgets/navbar.dart';
+import 'dart:async';
+import 'package:fps/view/screens/screen_onboarding/onbording_screen.dart';
 import 'package:get/get.dart';
 
 class SplashController extends GetxController {
+  var start = 30.obs;
   @override
   void onInit() {
     gotoHome();
@@ -10,10 +12,10 @@ class SplashController extends GetxController {
 
   gotoHome() async {
     await Future.delayed(
-      const Duration(seconds: 5),
+      const Duration(seconds: 1),
     );
     Get.offAll(
-      NavBarScreen(),
+      const OnbordingScreen(),
     );
   }
 }

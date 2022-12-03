@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fps/view/style/style.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class BotosheetForm extends StatelessWidget {
   final TextEditingController controller;
@@ -19,25 +20,24 @@ class BotosheetForm extends StatelessWidget {
     return TextFormField(
       controller: controller,
       validator: validator,
-   
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.all(5),
+          contentPadding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 5.h),
           enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(40),
-              borderSide: const BorderSide(color: lightred)),
+              borderRadius: BorderRadius.circular(40.r),
+              borderSide: const BorderSide(color: bg)),
           focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(40),
-            borderSide: const BorderSide(color: lightred),
+            borderRadius: BorderRadius.circular(40.r),
+            borderSide: const BorderSide(color: bg),
           ),
           errorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(40),
+            borderRadius: BorderRadius.circular(40.r),
             borderSide: const BorderSide(color: red),
           ),
-          fillColor: lightred,
-          focusColor: lightred,
+          fillColor: bg,
+          focusColor: bg,
           filled: true,
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(5),
+            borderRadius: BorderRadius.circular(40.r),
           )),
     );
   }

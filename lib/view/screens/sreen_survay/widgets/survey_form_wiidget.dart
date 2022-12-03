@@ -1,15 +1,13 @@
 import 'package:clay_containers/clay_containers.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fps/view/style/style.dart';
 
 class CustomSurveyTextForm extends StatelessWidget {
   final TextEditingController controller;
   final FormFieldValidator validator;
-
   final String title;
   final TextInputType textinputType;
- 
-
 
   const CustomSurveyTextForm({
     super.key,
@@ -17,8 +15,6 @@ class CustomSurveyTextForm extends StatelessWidget {
     required this.textinputType,
     required this.title,
     required this.validator,
-    
-
   });
 
   @override
@@ -28,46 +24,45 @@ class CustomSurveyTextForm extends StatelessWidget {
       children: [
         Text(
           title,
-          style: const TextStyle(fontWeight: FontWeight.w500),
+          style: const TextStyle(
+            color: grey3,
+          ),
         ),
-        SizedBox(
-          height:20,
-        ),
+        h10,
         ClayContainer(
           color: white,
-          borderRadius: 50,
+          borderRadius: 50.r,
           depth: 40,
           parentColor: white,
           spread: 2,
           child: TextFormField(
+            keyboardType: textinputType,
             controller: controller,
             validator: validator,
             textAlign: TextAlign.center,
             decoration: InputDecoration(
-                contentPadding: const EdgeInsets.all(5),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(40),
-                  borderSide: const BorderSide(color: lightgrey),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(40),
-                  borderSide: const BorderSide(color: lightgrey),
-                ),
-                errorBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(40),
-                  borderSide: const BorderSide(color: red),
-                ),
-                fillColor: white,
-                focusColor: white,
-                filled: true,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(5),
-                )),
+              contentPadding: EdgeInsets.all(5.w),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(40.r),
+                borderSide: const BorderSide(color: lightgrey),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(40.r),
+                borderSide: const BorderSide(color: lightgrey),
+              ),
+              errorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(40.r),
+                borderSide: const BorderSide(color: red),
+              ),
+              fillColor: white,
+              focusColor: white,
+              filled: true,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(40.r),
+              ),
+            ),
           ),
         ),
-        //  SizedBox(
-        //   height: sheight,
-        // ),
       ],
     );
   }

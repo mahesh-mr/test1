@@ -1,8 +1,12 @@
- class OnbordingModel{
-  String headline;
-  String subline;
-  String image; 
+import 'package:flutter/cupertino.dart';
+
+class OnbordingModel {
+  String image;
+
+  Text mainText;
+
   OnbordingModel({
-    required this.headline,required this.subline,required this.image
+    required this.image,
+    required this.mainText,
   });
- }
+}

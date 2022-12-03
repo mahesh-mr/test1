@@ -1,44 +1,48 @@
 import 'package:flutter/cupertino.dart';
 import 'package:fps/model/onbording_model.dart';
-import 'package:fps/view/screens/screen_onboarding/onbording_screen.dart';
+import 'package:fps/view/screens/screen%20_login/login_screen.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fps/view/style/style.dart';
 import 'package:get/get.dart';
 
 class onbordingController extends GetxController {
   var selectedIndex = 0.obs;
-  bool get isLastPage => selectedIndex.value == onbordingList.length - 1;
+  bool get isLastPage => selectedIndex.value == onbordingLists.length - 1;
   var pagecontroller = PageController();
 
   forwerdAction() {
     if (isLastPage) {
-      // Get.offAll(LogIn());
+      Get.offAll(LoginScreen());
     } else {
-      pagecontroller.nextPage(duration: 50.milliseconds, curve: Curves.ease);
+      pagecontroller.nextPage(duration: 550.milliseconds, curve: Curves.ease);
     }
   }
 
-  List<OnbordingModel> onbordingList = [
+  List<OnbordingModel> onbordingLists = [
     OnbordingModel(
-        headline: "Start The Survey",
-        subline:
-            "Easy  And Secure As Soon As The Survey Is Submited, The Date Is Scure",
-        image: 'assets/1.png'),
+      image: 'assets/1.png',
+      mainText: Text(
+        'Start\nThe Survey',
+        style: onbordingText,
+        textAlign: TextAlign.end,
+      ),
+    ),
     OnbordingModel(
-        headline: "Start The Survey",
-        subline:
-            "Easy  And Secure As Soon As The Survey Is Submited, The Date Is Scure",
-        image: 'assets/1.png'),
+      image: 'assets/2.png',
+      mainText: Text('Anytime\nAnywhere',
+          style: onbordingText, textAlign: TextAlign.center),
+    ),
     OnbordingModel(
-        headline: "Start The Survey",
-        subline:
-            "Easy  And Secure As Soon As The Survey Is Submited, The Date Is Scure",
-        image: 'assets/1.png'),
+      image: 'assets/1.png',
+      mainText: Text('Full\nSupport',
+          style: onbordingText, textAlign: TextAlign.start),
+    )
   ];
 
   gotoHome() async {
     await Future.delayed(
-      const Duration(seconds: 5),
+      const Duration(seconds: 50),
     );
-    Get.offAll(OnboaringScreen());
   }
 
   @override

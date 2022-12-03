@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:fps/view/style/style.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SurvayBackButton extends StatelessWidget {
   const SurvayBackButton({
     Key? key,
-
     required this.width,
     required this.child,
     required this.height,
     required this.onPressed,
+    required this.bg,
   }) : super(key: key);
 
   final double width;
-
-final VoidCallback onPressed;
+  final Color bg;
+  final VoidCallback onPressed;
   final Widget child;
   final double height;
 
@@ -21,17 +21,14 @@ final VoidCallback onPressed;
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        backgroundColor: lightblack,
-        minimumSize: Size(width, 20),
+        backgroundColor: bg,
+        minimumSize: Size(width, 20.h),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(20.r),
         ),
       ),
-      onPressed:onPressed,
+      onPressed: onPressed,
       child: child,
     );
-
-   
-    // );
   }
 }

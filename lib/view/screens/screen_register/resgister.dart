@@ -2,40 +2,38 @@ import 'package:clay_containers/clay_containers.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:fps/view/screens/screen%20_login/login_screen.dart';
+import 'package:fps/view/screens/screen%20_login/widgets/password.dart';
 import 'package:fps/view/screens/screen_register/widgets/custom_textform.dart';
 import 'package:fps/view/screens/screen_register/widgets/custombutton.dart';
 import 'package:fps/view/style/style.dart';
 import 'package:get/get.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class RegisteScreen extends StatelessWidget {
   RegisteScreen({super.key});
   final _emailController = TextEditingController();
   final _passwodController = TextEditingController();
   final _fomkey = GlobalKey<FormState>();
-  final h20 = const SizedBox(
-    height: 15,
-  );
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: bg,
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 40),
+        padding: EdgeInsets.symmetric(horizontal: 40.w),
         child: SingleChildScrollView(
           child: Column(
-            //   mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SizedBox(
-                height: 70,
+                height: 70.h,
               ),
               const Text(
                 "Register",
                 style: TextStyle(fontWeight: FontWeight.bold, color: grey),
               ),
               Container(
-                height: 200,
-                width: 200,
+                height: 180.h,
+                width: 200.w,
                 decoration: const BoxDecoration(
                   image: DecorationImage(
                     image: AssetImage('assets/3.png'),
@@ -64,28 +62,24 @@ class RegisteScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              const SizedBox(
-                height: 30,
-              ),
-              passwordForm(),
               h20,
-              h20,
+              PasswordForm(),
+              h30,
               RichText(
                 text: TextSpan(
                   text: "You Have Already an Account ? ",
-                  style: const TextStyle(color: black, fontSize: 18),
+                  style: const TextStyle(color: grey),
                   children: [
                     TextSpan(
                         text: ' Login',
-                        style: const TextStyle(color: blue, fontSize: 18),
+                        style: const TextStyle(
+                            color: mainred, fontWeight: FontWeight.bold),
                         recognizer: TapGestureRecognizer()
                           ..onTap = () => Get.to(LoginScreen()))
                   ],
                 ),
               ),
-              const SizedBox(
-                height: 30,
-              ),
+              h30,
               CustomButton(
                   btncolor: mainred,
                   textColor: white,
@@ -109,37 +103,37 @@ class RegisteScreen extends StatelessWidget {
   }
 
 //PASSWORD============================================
-  ClayContainer passwordForm() {
-    return ClayContainer(
-      color: white,
-      borderRadius: 50,
-      depth: 40,
-      parentColor: white,
-      spread: 2,
-      child: CustomTextForm(
-        controller: _passwodController,
-        maxline: 1,
-        textinputType: TextInputType.text,
-        title: 'Password',
-        validator: (value) {
-          // if (value!.isEmpty) {
-          //   return "Password minimum  1 length";
-          // } else if (!RegExp(r'(^[a-z A-Z]+$)').hasMatch(value)) {
-          //   return 'valid Passsworsd';
-          // } else {
-          //   return null;
-          // }
-        },
-      ),
-    );
-  }
+  // ClayContainer passwordForm() {
+  //   return ClayContainer(
+  //     color: white,
+  //     borderRadius: 50.r,
+  //     depth: 40,
+  //     parentColor: white,
+  //     spread: 2,
+  //     child: CustomTextForm(
+  //       controller: _passwodController,
+  //       maxline: 1,
+  //       textinputType: TextInputType.text,
+  //       title: 'Password',
+  //       validator: (value) {
+  //         // if (value!.isEmpty) {
+  //         //   return "Password minimum  1 length";
+  //         // } else if (!RegExp(r'(^[a-z A-Z]+$)').hasMatch(value)) {
+  //         //   return 'valid Passsworsd';
+  //         // } else {
+  //         //   return null;
+  //         // }
+  //       },
+  //     ),
+  //   );
+  // }
 
   //EMAIL===========================================================
 
   ClayContainer emailForm() {
     return ClayContainer(
       color: white,
-      borderRadius: 50,
+      borderRadius: 50.r,
       depth: 40,
       parentColor: white,
       spread: 2,
