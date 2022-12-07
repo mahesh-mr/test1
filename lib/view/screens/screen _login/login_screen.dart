@@ -8,6 +8,7 @@ import 'package:fps/view/screens/screen_forgot/forgot_screen.dart';
 import 'package:fps/view/screens/screen_register/resgister.dart';
 import 'package:fps/view/screens/screen_register/widgets/custom_textform.dart';
 import 'package:fps/view/screens/screen_register/widgets/custombutton.dart';
+import 'package:fps/view/screens/widgets/shadow_button.dart';
 import 'package:fps/view/style/style.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -99,17 +100,30 @@ class LoginScreen extends StatelessWidget {
               //   ),
               // ),
               h30,
-              CustomButton(
-                  textColor: white,
-                  btncolor: mainred,
-                  onPressed: () {
+              ShadowButton(
+                  onTap: () {
                     Get.to(NavBarScreen());
                     // bool isValid = _fomkey.currentState!.validate();
                     // if (isValid) {
 
                     // }
                   },
-                  title: 'Login to access')
+                  buttonColor: mainred,
+                  height: 40.h,
+                  textColor: bg,
+                  width: double.infinity,
+                  title: 'Login to access'),
+              // CustomButton(
+              //     textColor: white,
+              //     btncolor: mainred,
+              //     onPressed: () {
+              //       Get.to(NavBarScreen());
+              //       // bool isValid = _fomkey.currentState!.validate();
+              //       // if (isValid) {
+
+              //       // }
+              //     },
+              //     title: 'Login to access')
             ],
           ),
         ),
@@ -156,14 +170,9 @@ class LoginScreen extends StatelessWidget {
 
   //EMAIL===========================================================
 
-  ClayContainer emailForm() {
-    return ClayContainer(
-      color: white,
-      borderRadius: 50.r,
-      depth: 40,
-      parentColor: white,
-      spread: 2,
-      child: CustomTextForm(
+  CustomTextForm emailForm() {
+    return 
+       CustomTextForm(
         controller: _emailController,
         maxline: 1,
         textinputType: TextInputType.emailAddress,
@@ -179,7 +188,6 @@ class LoginScreen extends StatelessWidget {
           //   return null;
           // }
         },
-      ),
     );
   }
 }

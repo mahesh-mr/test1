@@ -1,3 +1,4 @@
+import 'package:clay_containers/clay_containers.dart';
 import 'package:flutter/material.dart';
 import 'package:fps/view/style/style.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -21,30 +22,37 @@ class CustomTextForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      maxLines: maxline,
-      controller: controller,
-      validator: validator,
-      textAlign: TextAlign.center,
-      decoration: InputDecoration(
-        contentPadding: EdgeInsets.all(5.w),
-        enabledBorder: OutlineInputBorder(
+    return ClayContainer(
+      color: white,
+      borderRadius: 50.r,
+      depth: 40,
+      parentColor: white,
+      spread: 2,
+      child: TextFormField(
+        maxLines: maxline,
+        controller: controller,
+        validator: validator,
+        textAlign: TextAlign.center,
+        decoration: InputDecoration(
+          contentPadding: EdgeInsets.all(5.w),
+          enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(40.r),
+              borderSide: const BorderSide(color: lightgrey)),
+          focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(40.r),
-            borderSide: const BorderSide(color: lightgrey)),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(40.r),
-          borderSide: const BorderSide(color: lightgrey),
-        ),
-        errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(40.r),
-          borderSide: const BorderSide(color: red),
-        ),
-        hintText: title,
-        fillColor: white,
-        focusColor: white,
-        filled: true,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(40.r),
+            borderSide: const BorderSide(color: lightgrey),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(40.r),
+            borderSide: const BorderSide(color: red),
+          ),
+          hintText: title,
+          fillColor: white,
+          focusColor: white,
+          filled: true,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(40.r),
+          ),
         ),
       ),
     );

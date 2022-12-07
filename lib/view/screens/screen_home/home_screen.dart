@@ -1,10 +1,13 @@
-import 'package:clay_containers/clay_containers.dart';
 import 'package:flutter/material.dart';
 import 'package:fps/controller/controller/home_controller.dart/home_controller.dart';
+import 'package:fps/view/screens/screen_home/stock_items.dart';
 import 'package:fps/view/screens/screen_home/widgets/botomfom.dart';
-import 'package:fps/view/screens/screen_home/widgets/small_button.dart';
+import 'package:fps/view/screens/screen_home/widgets/maxlength_widgets.dart';
 import 'package:fps/view/screens/screen_register/widgets/custombutton.dart';
 import 'package:fps/view/screens/sreen_survay/survay_screen.dart';
+import 'package:fps/view/screens/widgets/custom_dropdown.dart';
+import 'package:fps/view/screens/widgets/custom_popupmenu.dart';
+import 'package:fps/view/screens/widgets/shadow_button.dart';
 import 'package:fps/view/style/style.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -23,33 +26,33 @@ bool _switchValue = false;
 class _HomeScreenState extends State<HomeScreen> {
   List<String> talukItems = [
     'TALUK',
-    'Taluk 1',
-    'Taluk 2',
-    'Taluk 3',
-    'Taluk 4',
-    'Taluk 5',
-    'Taluk 6'
+    'TALUK 1',
+    'TALUK 2',
+    'TALUK 3',
+    'TALUK 4',
+    'TALUK 5',
+    'TALUK 6'
   ];
   String talukvalues = 'TALUK';
 
   var districtItems = [
     'DISTRICT',
-    'District 1',
-    'District 2',
-    'District 3',
-    'District 4',
-    'District 5',
-    'District 6'
+    'DISTRICT 1',
+    'DISTRICT 2',
+    'DISTRICT 3',
+    'DISTRICT 4',
+    'DISTRICT 5',
+    'DISTRICT 6'
   ];
   String districtValue = 'DISTRICT';
   var firkaitems = [
     'FIRKA',
-    'Firka 1',
-    'Firka 2',
-    'Firka 3',
-    'Firka 4',
-    'Firka 5',
-    'Firka 6'
+    'FIRKA 1',
+    'FIRKA 2',
+    'FIRKA 3',
+    'FIRKA 4',
+    'FIRKA 5',
+    'FIRKA 6'
   ];
   String firkaValue = 'FIRKA';
 
@@ -57,8 +60,11 @@ class _HomeScreenState extends State<HomeScreen> {
   final positions = TextEditingController();
   final inspectorname = TextEditingController();
 
+  bool isVisble = true;
+
   @override
   Widget build(BuildContext context) {
+    final HomeController homecontroller = Get.put(HomeController());
     return Scaffold(
       backgroundColor: bg,
       appBar: AppBar(
@@ -70,13 +76,7 @@ class _HomeScreenState extends State<HomeScreen> {
           style: appText,
         ),
         actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(
-              Icons.menu,
-              color: mainred,
-            ),
-          ),
+          PopupmenuButtonWidgets(color: mainred),
         ],
       ),
       body: SingleChildScrollView(
@@ -132,21 +132,28 @@ class _HomeScreenState extends State<HomeScreen> {
                     h15,
                     district(),
                     h15,
-                    thaluk(),
+                    taluk(),
                     h15,
                     firka(),
                     h20,
                     bottomSheet(context),
                     h20,
-                    CustomButton(
-                      onPressed: () {
-                        Get.to(
-                          SurveyScreen(),
-                        );
+                    ShadowButton(
+                      title: 'Start Survey',
+                      buttonColor: mainred,
+                      height: 40.h,
+                      width: double.infinity,
+                      textColor: bg,
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SurveyScreen(),
+                            ));
+                        // Get.to(
+                        //   SurveyScreen(),
+                        // );
                       },
-                      title: "Start Survey",
-                      btncolor: mainred,
-                      textColor: white,
                     ),
                   ],
                 ),
@@ -158,114 +165,62 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-//district====================================================================
-//=============================================================================
-  ClayContainer district() {
-    return ClayContainer(
-      color: white,
-      borderRadius: 50.r,
-      depth: 40,
-      parentColor: white,
-      spread: 2,
-      width: double.infinity,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24),
-        child: DropdownButtonHideUnderline(
-          child: DropdownButton(
-            alignment: AlignmentDirectional.center,
-            style: TextStyle(fontWeight: FontWeight.w600, color: grey),
-            // hint: Text('DISTRICT',style: TextStyle(fontWeight: FontWeight.w600,color: grey),),
-            value: districtValue,
-            icon: const Icon(Icons.keyboard_arrow_down),
-            items: districtItems.map((String items) {
-              return DropdownMenuItem(
-                value: items,
-                child: Text(items),
-              );
-            }).toList(),
-            onChanged: (String? newValue) {
-              setState(() {
-                districtValue = newValue!;
-              });
-            },
-          ),
-        ),
-      ),
+//TALUK=======================================
+
+  CustomDropdown taluk() {
+    return CustomDropdown(
+      onpressed: (String? newValue) {
+        setState(() {
+          talukvalues = newValue!;
+        });
+      },
+      value: talukvalues,
+      items: talukItems.map((String items) {
+        return DropdownMenuItem(
+          value: items,
+          child: Text(items),
+        );
+      }).toList(),
     );
   }
 
-//taluk================================================================================
-//====================================================================================
-  ClayContainer thaluk() {
-    return ClayContainer(
-      color: white,
-      borderRadius: 50.r,
-      depth: 40,
-      parentColor: white,
-      spread: 2,
-      width: double.infinity,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24),
-        child: DropdownButtonHideUnderline(
-          child: DropdownButton(
-            alignment: AlignmentDirectional.center,
-            style: TextStyle(fontWeight: FontWeight.w600, color: grey),
-            value: talukvalues,
-            icon: const Icon(Icons.keyboard_arrow_down),
-            items: talukItems.map((String items) {
-              return DropdownMenuItem(
-                value: items,
-                child: Text(items),
-              );
-            }).toList(),
-            onChanged: (String? newValue) {
-              setState(() {
-                talukvalues = newValue!;
-              });
-            },
-          ),
-        ),
-      ),
+//DISTRIC==================================================
+  CustomDropdown district() {
+    return CustomDropdown(
+      value: districtValue,
+      items: districtItems.map((String items) {
+        return DropdownMenuItem(
+          value: items,
+          child: Text(items),
+        );
+      }).toList(),
+      onpressed: (String? newValue) {
+        setState(() {
+          districtValue = newValue!;
+        });
+      },
     );
   }
 
-//firka==========================================================================
-//===========================================================================
-  ClayContainer firka() {
-    return ClayContainer(
-      color: white,
-      borderRadius: 50.r,
-      depth: 40,
-      parentColor: white,
-      spread: 2,
-      width: double.infinity,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24),
-        child: DropdownButtonHideUnderline(
-          child: DropdownButton(
-            alignment: AlignmentDirectional.center,
-            style: TextStyle(fontWeight: FontWeight.w600, color: grey),
-            value: firkaValue,
-            icon: const Icon(Icons.keyboard_arrow_down),
-            items: firkaitems.map((String items) {
-              return DropdownMenuItem(
-                value: items,
-                child: Text(items),
-              );
-            }).toList(),
-            onChanged: (String? newValue) {
-              setState(() {
-                firkaValue = newValue!;
-              });
-            },
-          ),
-        ),
-      ),
+//FIRKA=======================================================
+
+  CustomDropdown firka() {
+    return CustomDropdown(
+      onpressed: (String? newValue) {
+        setState(() {
+          firkaValue = newValue!;
+        });
+      },
+      value: firkaValue,
+      items: firkaitems.map((String items) {
+        return DropdownMenuItem(
+          value: items,
+          child: Text(items),
+        );
+      }).toList(),
     );
   }
 
-//bottomsheet==================================================================
-//=============================================================================
   Row bottomSheet(BuildContext context) {
     return Row(
       children: [
@@ -277,126 +232,195 @@ class _HomeScreenState extends State<HomeScreen> {
               _switchValue = value;
             });
             if (_switchValue == true) {
-              showModalBottomSheet(
-                isScrollControlled: true,
-                backgroundColor: mainred,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(60.r),
-                    topRight: Radius.circular(60.r),
-                  ),
-                ),
-                context: context,
-                builder: (context) {
-                  return SizedBox(
-                    width: double.infinity,
-                    height: 550.h,
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 30.w),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(top: 50.h),
-                            child: Text(
-                              'Accompanied\nSurvey',
-                              style: bottomtext,
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                          h25,
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                'Number of Accompanied Persons',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, color: white),
-                              ),
-                              h15,
-                              numberFeild(),
-                              // BotosheetForm(
-                              //   controller: number,
-                              //   textinputType: TextInputType.number,
-                              //   validator: (value) {},
-                              // ),
-                              h15,
-                              const Text(
-                                'Inspector Name',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, color: white),
-                              ),
-                              h15,
-                              BotosheetForm(
-                                controller: inspectorname,
-                                textinputType: TextInputType.name,
-                                validator: (value) {},
-                              ),
-                              h15,
-                              const Text(
-                                'Position',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, color: white),
-                              ),
-                              h15,
-                              BotosheetForm(
-                                controller: positions,
-                                textinputType: TextInputType.text,
-                                validator: (value) {},
-                              ),
-                              h50,
-                              CustomButton(
-                                onPressed: () {},
-                                title: "SUBMIT",
-                                btncolor: white,
-                                textColor: mainred,
-                              )
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              );
+              Get.to(StoreItems());
+              // showModalBottomSheet(
+              //   isScrollControlled: true,
+              //   backgroundColor: mainred,
+              //   shape: RoundedRectangleBorder(
+              //     borderRadius: BorderRadius.only(
+              //       topLeft: Radius.circular(60.r),
+              //       topRight: Radius.circular(60.r),
+              //     ),
+              //   ),
+              //   context: context,
+              //   builder: (context) {
+              //     return SizedBox(
+              //       width: double.infinity,
+              //       //   height: 550.h,
+              //       child: Padding(
+              //         padding: EdgeInsets.symmetric(horizontal: 30.w),
+              //         child: Column(
+              //           mainAxisAlignment: MainAxisAlignment.start,
+              //           children: [
+              //             Padding(
+              //               padding: EdgeInsets.only(top: 50.h),
+              //               child: Text(
+              //                 'Accompanied\nSurvey',
+              //                 style: bottomtext,
+              //                 textAlign: TextAlign.center,
+              //               ),
+              //             ),
+              //             h25,
+              //             SingleChildScrollView(
+              //               child: Column(
+              //                 crossAxisAlignment: CrossAxisAlignment.start,
+              //                 children: [
+              //                   const Text(
+              //                     'Number of Accompanied Persons',
+              //                     style: TextStyle(
+              //                         fontWeight: FontWeight.bold,
+              //                         color: white),
+              //                   ),
+              //                   h15,
+              //                   MaxlengthTextFormWidget(
+              //                     controller: number,
+              //                     counterColor: bg,
+              //                     textinputType: TextInputType.number,
+              //                     validator: (value) {},
+              //                     borderColor: bg,
+              //                     filledColor: bg,
+              //                   ),
+              //                   // BotosheetForm(
+              //                   //   controller: number,
+              //                   //   textinputType: TextInputType.number,
+              //                   //   validator: (value) {},
+              //                   // ),
+              //                   h15,
+              //                   const Text(
+              //                     'Inspector Name',
+              //                     style: TextStyle(
+              //                         fontWeight: FontWeight.bold,
+              //                         color: white),
+              //                   ),
+              //                   h15,
+              //                   // ignore: null_check_always_fails
+              //                   BotosheetForm(
+              //                     controller: inspectorname,
+              //                     textinputType: TextInputType.name,
+              //                     validator: (value) {},
+              //                   ),
+              //                   h15,
+              //                   const Text(
+              //                     'Position',
+              //                     style: TextStyle(
+              //                         fontWeight: FontWeight.bold,
+              //                         color: white),
+              //                   ),
+              //                   h15,
+              //                   BotosheetForm(
+              //                     controller: positions,
+              //                     textinputType: TextInputType.text,
+              //                     validator: (value) {},
+              //                   ),
+              //                   h15,
+                             
+              //                      TextButton(
+              //                         onPressed: () {
+              //                           // homecontroller.isVisible.value =
+              //                           //     !homecontroller.isVisible.value;
+              //                           setState(() {
+              //                             isVisble =!isVisble;
+              //                           });
+              //                         },
+              //                         child: const Text(
+              //                           'Others',
+              //                           style: TextStyle(
+              //                               fontWeight: FontWeight.bold,
+              //                               color: white),
+              //                         ),
+              //                       ),
+                                 
+
+              //                   h15, h15, h15,
+              //                   Visibility(
+              //                     visible: isVisble,
+              //                     child: BotosheetForm(
+              //                       controller: inspectorname,
+              //                       textinputType: TextInputType.name,
+              //                       validator: (value) {},
+              //                     ),
+              //                   ),
+              //                   //       Visibility(visible: isVisble, child:  BotosheetForm(
+              //                   //   controller: inspectorname,
+              //                   //   textinputType: TextInputType.name,
+              //                   //   validator: (value) {},
+              //                   // ),),
+              //                   //        Column(
+              //                   //         children: [
+              //                   //              BotosheetForm(
+              //                   //   controller: inspectorname,
+              //                   //   textinputType: TextInputType.name,
+              //                   //   validator: (value) {},
+              //                   // ),
+              //                   // h15,
+              //                   //    BotosheetForm(
+              //                   //   controller: inspectorname,
+              //                   //   textinputType: TextInputType.name,
+              //                   //   validator: (value) {},
+              //                   // ),
+              //                   // h15,
+              //                   //    BotosheetForm(
+              //                   //   controller: inspectorname,
+              //                   //   textinputType: TextInputType.name,
+              //                   //   validator: (value) {},
+              //                   // ),
+              //                   // h15,
+              //                   //    BotosheetForm(
+              //                   //   controller: inspectorname,
+              //                   //   textinputType: TextInputType.name,
+              //                   //   validator: (value) {},
+              //                   // ),
+              //                   // h15,
+              //                   //    BotosheetForm(
+              //                   //   controller: inspectorname,
+              //                   //   textinputType: TextInputType.name,
+              //                   //   validator: (value) {},
+              //                   // ),
+              //                   // h15,
+              //                   //    BotosheetForm(
+              //                   //   controller: inspectorname,
+              //                   //   textinputType: TextInputType.name,
+              //                   //   validator: (value) {},
+              //                   // ),
+              //                   // h15,
+              //                   //    BotosheetForm(
+              //                   //   controller: inspectorname,
+              //                   //   textinputType: TextInputType.name,
+              //                   //   validator: (value) {},
+              //                   // ),
+              //                   // h15,
+
+              //                   //         ],
+              //                   //       )),
+
+              //                   // ShadowButton(onTap: () {
+
+              //                   // }, buttonColor: bg, height: 40.r, textColor: mainred, width: double.infinity, title:  "SUBMIT",)
+              //                   CustomButton(
+              //                     onPressed: () {},
+              //                     title: "SUBMIT",
+              //                     btncolor: white,
+              //                     textColor: mainred,
+              //                   )
+              //                 ],
+              //               ),
+              //             ),
+              //           ],
+              //         ),
+              //       ),
+              //     );
+              //   },
+              // );
             }
           },
         ),
 //txt=================================================================
 //==============================================================================
         const Text(
-          'Is It An Accompanied Inspected ?',
+          'Is it an accompanied inspected?.',
           style: TextStyle(color: grey),
         ),
       ],
-    );
-  }
-
-  TextFormField numberFeild() {
-    return TextFormField(
-      maxLength: 7,
-      keyboardType: TextInputType.number,
-      controller: number,
-      validator: (value) {},
-      decoration: InputDecoration(
-          contentPadding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 5.h),
-          enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(40.r),
-              borderSide: const BorderSide(color: bg)),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(40.r),
-            borderSide: const BorderSide(color: bg),
-          ),
-          errorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(40.r),
-            borderSide: const BorderSide(color: red),
-          ),
-          fillColor: bg,
-          focusColor: bg,
-          filled: true,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(40.r),
-          )),
     );
   }
 
@@ -413,18 +437,30 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         w10,
         Obx(() {
-          return SmallButtons(
-            backgroundColor: mainred,
-            height: 23.h,
-            textColor: white,
-            width: 150.w,
-            text: Text(DateFormat("dd-MM-yyyy")
-                .format(homecontroller.selectedDate.value)
-                .toString()),
-            onPressed: () {
-              homecontroller.choseDate();
-            },
-          );
+          return ShadowButton(
+              onTap: () {
+                homecontroller.choseDate();
+              },
+              buttonColor: mainred,
+              height: 23.h,
+              textColor: bg,
+              width: 150.w,
+              title: DateFormat("dd-MM-yyyy")
+                  .format(homecontroller.selectedDate.value)
+                  .toString());
+          //   SmallButtons(
+          //     backgroundColor: mainred,
+          //     height: 23.h,
+          //     textColor: white,
+          //     width: 150.w,
+          //     text: Text(DateFormat("dd-MM-yyyy")
+          //         .format(homecontroller.selectedDate.value)
+          //         .toString()),
+          //     onPressed: () {
+
+          //     },
+
+          // );
         }),
       ],
     );

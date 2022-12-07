@@ -7,13 +7,15 @@ import 'package:get/get.dart';
 
 class onbordingController extends GetxController {
   var selectedIndex = 0.obs;
-  bool get isLastPage => selectedIndex.value == onbordingLists.length - 1;
+  bool get  isLastPage => selectedIndex.value == onbordingLists.length - 1;
   var pagecontroller = PageController();
 
   forwerdAction() {
+    //bool isvaliod = fomliey.v.
     if (isLastPage) {
       Get.offAll(LoginScreen());
     } else {
+    
       pagecontroller.nextPage(duration: 550.milliseconds, curve: Curves.ease);
     }
   }

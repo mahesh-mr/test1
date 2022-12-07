@@ -17,7 +17,7 @@ class NavBarScreen extends StatefulWidget {
 
 class _NavBarScreenState extends State<NavBarScreen> {
   int _currentSelectedIndex = 0;
-  final List<Widget> _pages = [
+  final List _pages = [
     const HomeScreen(),
     const Profile(),
     const support(),

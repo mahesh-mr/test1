@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fps/model/d/d.dart';
+import 'package:fps/model/radio_model.dart';
 import 'package:fps/view/style/style.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -12,20 +12,40 @@ class CustomRadio extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Card(
-            //    borderOnForeground:true ,
-            color: _gender.isSelected ? mainred : white,
-            child: Container(
-              height: 45.h,
-              width: 55.w,
-              alignment: Alignment.center,
-              margin: EdgeInsets.all(2.0.w),
-              child: Text(
-                _gender.name,
-                style: TextStyle(
-                    color: _gender.isSelected ? Colors.white : Colors.grey),
-              ),
-            )),
+        Container(
+          decoration: const BoxDecoration(
+            boxShadow: [
+             
+   
+    BoxShadow(
+         offset: Offset(-5, 7),
+        spreadRadius: -7,
+        blurRadius: 5,
+        color: Color.fromRGBO(149, 147, 147, 1),
+    )
+    // ,  BoxShadow(
+    //     offset: Offset(-1, -7),
+    //     spreadRadius: -6,
+    //     blurRadius: 1,
+    //     color: Color.fromRGBO(255, 255, 255, 1),
+    // )
+            ]
+          ),
+          child: Card(
+              //    borderOnForeground:true ,
+              color: _gender.isSelected ? mainred : white,
+              child: Container(
+                height: 45.h,
+                width: 55.w,
+                alignment: Alignment.center,
+                margin: EdgeInsets.all(2.0.w),
+                child: Text(
+                  _gender.name,
+                  style: TextStyle(
+                      color: _gender.isSelected ? Colors.white : Colors.grey),
+                ),
+              )),
+        ),
         //  SizedBox(width: 30,)
       ],
     );

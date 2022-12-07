@@ -1,10 +1,14 @@
+import 'dart:ffi';
+
 import 'package:clay_containers/clay_containers.dart';
 import 'package:flutter/material.dart';
 import 'package:fps/controller/controller/home_controller.dart/home_controller.dart';
+import 'package:fps/view/screens/page_view/page_view.dart';
 import 'package:fps/view/screens/qution_air/start_qustins.dart';
 import 'package:fps/view/screens/screen_register/widgets/custombutton.dart';
 import 'package:fps/view/screens/sreen_survay/widgets/survey_back_button.dart';
 import 'package:fps/view/screens/sreen_survay/widgets/survey_form_wiidget.dart';
+import 'package:fps/view/screens/widgets/shadow_button.dart';
 import 'package:fps/view/style/style.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -52,6 +56,63 @@ class SurveyScreen extends StatelessWidget {
                 style: welcomeText,
               ),
               h40,
+
+              // ClayContainer(
+              //         color: white,
+              //         borderRadius: 50.r,
+              //         depth: 40,
+              //         parentColor: white,
+              //         spread: 2,
+              //   child: MaxlengthTextFormWidget(
+              //                                   controller: fpsnumberController,
+              //                                   counterColor: lightgrey,
+              //                                   textinputType: TextInputType.number,
+              //                                   validator: (value) {},
+              //                                   borderColor: lightgrey,
+              //                                   filledColor: white,
+              //                                  ),
+              // ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: const [
+                  // ClayContainer(
+                  //   color: white,
+                  //   borderRadius: 50.r,
+                  //   depth: 40,
+                  //   parentColor: white,
+                  //   spread: 2,
+                  //   child: TextFormField(
+                  //     maxLength: 7,
+                  //     keyboardType: TextInputType.number,
+                  //     controller: fpsnumberController,
+                  //     validator: (value) {},
+                  //     textAlign: TextAlign.center,
+                  //     decoration: InputDecoration(
+                  //       contentPadding: EdgeInsets.all(5.w),
+                  //       enabledBorder: OutlineInputBorder(
+                  //         borderRadius: BorderRadius.circular(40.r),
+                  //         borderSide: const BorderSide(color: lightgrey),
+                  //       ),
+                  //       focusedBorder: OutlineInputBorder(
+                  //         borderRadius: BorderRadius.circular(40.r),
+                  //         borderSide: const BorderSide(color: lightgrey),
+                  //       ),
+                  //       errorBorder: OutlineInputBorder(
+                  //         borderRadius: BorderRadius.circular(40.r),
+                  //         borderSide: const BorderSide(color: red),
+                  //       ),
+                  //       fillColor: white,
+                  //       focusColor: white,
+                  //       filled: true,
+                  //       border: OutlineInputBorder(
+                  //         borderRadius: BorderRadius.circular(40.r),
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
+                ],
+              ),
+
               CustomSurveyTextForm(
                 controller: fpsnumberController,
                 textinputType: TextInputType.number,
@@ -120,18 +181,26 @@ class SurveyScreen extends StatelessWidget {
                 title: "Position of Previous Inspector",
                 validator: (value) {},
               ),
-              h30,
-              CustomButton(
-                  onPressed: () {
-                    Get.to(StartQustions());
-                  },
-                  title: 'SUBMIT',
-                  btncolor: mainred,
-                  textColor: white),
-              h30,
+              h35,
+
+              ShadowButton(
+                  onTap: () { Get.to(QustionPage());},
+                  buttonColor: mainred,
+                  height: 40.h,
+                  textColor: bg,
+                  width: double.infinity,
+                  title: 'SUBMIT'),
+              // CustomButton(
+              //     onPressed: () {
+              //       Get.to(StartQustions());
+              //     },
+              //     title: 'SUBMIT',
+              //     btncolor: mainred,
+              //     textColor: white),
+              h50,
               SizedBox(
                 height: 20.h,
-                width: 140.w,
+                width: double.infinity,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:fps/view/screens/qution_air/widgets/custom_clippath.dart';
 import 'package:fps/view/screens/qution_air/widgets/custom_radio/radiobutton.dart';
-import 'package:fps/view/screens/screen_register/widgets/custombutton.dart';
 import 'package:fps/view/screens/sreen_survay/widgets/survey_back_button.dart';
+import 'package:fps/view/screens/widgets/shadow_button.dart';
 import 'package:fps/view/style/style.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -23,101 +22,42 @@ class RefactorSarvey extends StatelessWidget {
   String cdate = DateFormat("dd-MM-yyy").format(DateTime.now());
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: bg,
-      appBar: AppBar(
-        leading: Padding(
-          padding: const EdgeInsets.only(
-            bottom: 130,
-          ),
-          child: IconButton(
-            onPressed: () {
-              Navigator.of(context);
-            },
-            icon: const Icon(
-              Icons.arrow_back_ios,
-              color: white,
-            ),
-          ),
-        ),
-        centerTitle: true,
-        title: Padding(
-          padding: const EdgeInsets.only(bottom: 130),
-          child: Text(
-            "CIVIL SUPPLIES",
-            style: appTextWhite,
-          ),
-        ),
-        toolbarHeight: 250,
-        backgroundColor: Colors.transparent,
-        elevation: 0.0,
-        flexibleSpace: ClipPath(
-          clipper: Customshape(),
-          child: Stack(
-            children: [
-              Container(
-                height: 400,
-                width: MediaQuery.of(context).size.width,
-                color: mainred,
-              ),
-              Positioned(
-                bottom: 70.h,
-                left: 70.w,
-                child: Text(
-                  '1234567',
-                  style: fpsnumber,
-                ),
-              ),
-              Positioned(
-                  bottom: 70.h,
-                  right: 70.w,
-                  child: Container(
-                    child: Text(
-                      cdate,
-                      style: fpsnumber,
-                    ),
-                  ))
-            ],
-          ),
-        ),
-      ),
-      body: Column(
+    return Padding(
+      padding:  EdgeInsets.symmetric(horizontal: 40.w),
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 60),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  number,
-                  style: numbeText,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                number,
+                style: numbeText,
+              ),
+              SizedBox(
+                width: 70.w,
+                height: 50.h,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const LinearProgressIndicator(
+                      backgroundColor: black,
+                      value: 0.5,
+                      color: yellow,
+                    ),
+                    SizedBox(
+                      height: 3.h,
+                    ),
+                    Text(
+                      barstatus,
+                      style:
+                          TextStyle(color: yellow, fontWeight: FontWeight.bold),
+                    )
+                  ],
                 ),
-                SizedBox(
-                  width: 70.w,
-                  height: 50.h,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const LinearProgressIndicator(
-                        backgroundColor: black,
-                        value: 0.5,
-                        color: yellow,
-                      ),
-                      SizedBox(
-                        height: 3.h,
-                      ),
-                      Text(
-                        barstatus,
-                        style: TextStyle(
-                            color: yellow, fontWeight: FontWeight.bold),
-                      )
-                    ],
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
           SizedBox(
             height: 20.h,
@@ -135,25 +75,19 @@ class RefactorSarvey extends StatelessWidget {
               style: normalText,
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 0),
-            child: GenderSelector(),
-          ),
-          SizedBox(
-            height: 30.h,
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 40.w),
-            child: CustomButton(
-                onPressed: onPressed,
-                title: 'SUBMIT',
-                btncolor: mainred,
-                textColor: bg),
-          ),
-          h30,
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 40.w),
-            child: SizedBox(
+        GenderSelector(),
+      
+      h30,
+      ShadowButton(onTap:onPressed, buttonColor: mainred, height: 
+      40.h, textColor: bg, width: double.infinity, title: 'SUBMIT'),
+        //  CustomButton(
+        //         onPressed: onPressed,
+        //         title: 'SUBMIT',
+        //         btncolor: mainred,
+        //         textColor: bg),
+        
+          h65,
+         SizedBox(
               height: 20.h,
               width: double.infinity,
               child: Row(
@@ -200,7 +134,7 @@ class RefactorSarvey extends StatelessWidget {
                 ],
               ),
             ),
-          )
+          
         ],
       ),
     );

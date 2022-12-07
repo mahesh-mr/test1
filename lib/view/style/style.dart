@@ -23,6 +23,20 @@ const grey2 = Color.fromARGB(255, 214, 212, 212);
 //fonts===========================================================================
 //================================================================================
 
+final fontZ_14_Grey = GoogleFonts.firaSans(
+    fontSize: 14.sp, fontWeight: FontWeight.w600, color: grey);
+
+final fontZ_16White = GoogleFonts.firaSans(
+    fontSize: 16.sp, fontWeight: FontWeight.w600, color: white);
+final fontZ_16White2 = GoogleFonts.firaSans(
+    fontSize: 16.sp, fontWeight: FontWeight.w600, color: white.withOpacity(.5));
+final fontZ_16White3 = GoogleFonts.firaSans(
+    fontSize: 16.sp, fontWeight: FontWeight.w400, color: white);
+final fontZ_30_White = GoogleFonts.firaSans(
+    fontSize: 30.sp, fontWeight: FontWeight.w600, color: white);
+final fontZ_30_black = GoogleFonts.firaSans(
+    fontSize: 30.sp, fontWeight: FontWeight.w600, color: lightblack);
+
 final headline = GoogleFonts.firaSans(fontSize: 16.sp, color: mainred);
 final welcomeText = GoogleFonts.firaSans(
     fontSize: 28.sp, color: lightblack, fontWeight: FontWeight.bold);
@@ -30,23 +44,25 @@ final headText = GoogleFonts.firaSans(
     fontSize: 30.sp, fontWeight: FontWeight.w600, color: white);
 final onbordingText = GoogleFonts.firaSans(
     fontWeight: FontWeight.w900, fontSize: 40, color: lightblack);
-    final numbeText= GoogleFonts.firaSans(
+final numbeText = GoogleFonts.firaSans(
     fontWeight: FontWeight.w900, fontSize: 40, color: lightblack);
 final appText = GoogleFonts.firaSans(
     fontSize: 16.sp, fontWeight: FontWeight.w600, color: lightblack);
-    final normalText = GoogleFonts.firaSans(
-    fontSize: 16.sp, fontWeight: FontWeight.w600, color: grey,wordSpacing: 2);
+final normalText = GoogleFonts.firaSans(
+    fontSize: 16.sp, fontWeight: FontWeight.w600, color: grey, wordSpacing: 2);
 final appTextWhite = GoogleFonts.firaSans(
     fontSize: 16.sp, fontWeight: FontWeight.w600, color: bg);
-    final numbers = GoogleFonts.firaSans(
+final numbers = GoogleFonts.firaSans(
     fontSize: 16.sp, fontWeight: FontWeight.w600, color: bg);
 final bottomtext = GoogleFonts.firaSans(
     fontSize: 28.sp, color: white, fontWeight: FontWeight.bold);
-    final fpsnumber = GoogleFonts.firaSans(
-    fontSize: 16.sp, fontWeight: FontWeight.w600, color: white);
+
+//units========================================================================================
 
 //hightdiamentions===========================================================================
 //======================================================================================
+final h3 = SizedBox(height: 3.h);
+final h5 = SizedBox(height: 5.h);
 final h10 = SizedBox(height: 10.h);
 final h15 = SizedBox(height: 15.h);
 final h20 = SizedBox(height: 20.h);
@@ -54,6 +70,8 @@ final h25 = SizedBox(height: 25.h);
 final h40 = SizedBox(height: 40.h);
 final h30 = SizedBox(height: 30.h);
 final h50 = SizedBox(height: 50.h);
+final h35 = SizedBox(height: 35.h);
+final h65 = SizedBox(height: 65.h);
 
 //width dimentions========================================================================
 //=================================================================================
