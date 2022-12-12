@@ -7,6 +7,7 @@ class BotosheetForm extends StatelessWidget {
   final FormFieldValidator validator;
 
   final TextInputType textinputType;
+  final void Function(String)? onChanged;
 
 
 
@@ -14,15 +15,17 @@ class BotosheetForm extends StatelessWidget {
     super.key,
     required this.controller,
     required this.textinputType,
-    required this.validator,
+    required this.validator,required this.onChanged,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-     
+      onChanged:onChanged ,
+     keyboardType:textinputType ,
       controller: controller,
       validator: validator,
+
       decoration: InputDecoration(
         counterStyle: TextStyle(color:bg),
           contentPadding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 5.h),

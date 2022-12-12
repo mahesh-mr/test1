@@ -2,17 +2,50 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class HomeController extends GetxController {
-  String? categoryValue;
+  //String? categoryValue;
   var selectedDate = DateTime.now().obs;
+  var isVisible = true.obs;
 
-  var isVisible =true.obs;
+  String? firkaValue;
+  String? districtValue;
+  String? talukvalues;
 
-  dropdownChanging(String value, String chekingvalue) {
-    if (chekingvalue == 'category') {
-      categoryValue = value;
+  List<String> firkaitems = [
+    'FIRKA 1',
+    'FIRKA 2',
+    'FIRKA 3',
+    'FIRKA 4',
+    'FIRKA 5',
+    'FIRKA 6'
+  ];
+  List<String> districtItems = [
+    'DISTRICT 1',
+    'DISTRICT 2',
+    'DISTRICT 3',
+    'DISTRICT 4',
+    'DISTRICT 5',
+    'DISTRICT 6'
+  ];
+  List<String> talukItems = [
+    'TALUK 1',
+    'TALUK 2',
+    'TALUK 3',
+    'TALUK 4',
+    'TALUK 5',
+    'TALUK 6'
+  ];
+
+  dropdownValueChanging(String value, String checkingValue) {
+    if (checkingValue == "DISTRICT") {
+      districtValue = value;
+    } else if (checkingValue == "TALUK") {
+      talukvalues = value;
+    } else if (checkingValue == "FIRKA") {
+      firkaValue = value;
     }
     update();
   }
+
   choseDate() async {
     DateTime? pickDate = await showDatePicker(
       context: Get.context!,
@@ -29,7 +62,6 @@ class HomeController extends GetxController {
       selectedDate.value = pickDate;
     }
   }
-  
 
 //note use in ihis picker=============================================
 //====================================================================

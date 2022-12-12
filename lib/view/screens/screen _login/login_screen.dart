@@ -1,13 +1,8 @@
-import 'package:clay_containers/clay_containers.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:fps/controller/controller/authController/auth_controller.dart';
 import 'package:fps/view/screens/navebar_screen/navbar.dart';
-import 'package:fps/view/screens/screen%20_login/widgets/password.dart';
 import 'package:fps/view/screens/screen_forgot/forgot_screen.dart';
-import 'package:fps/view/screens/screen_register/resgister.dart';
-import 'package:fps/view/screens/screen_register/widgets/custom_textform.dart';
-import 'package:fps/view/screens/screen_register/widgets/custombutton.dart';
+import 'package:fps/view/screens/screen%20_login/widgets/custom_textform.dart';
 import 'package:fps/view/screens/widgets/shadow_button.dart';
 import 'package:fps/view/style/style.dart';
 import 'package:get/get.dart';
@@ -16,7 +11,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
   final _emailController = TextEditingController();
-  final _passwodController = TextEditingController();
   final _fomkey = GlobalKey<FormState>();
   final authController = Get.put(AuthController());
 
@@ -61,14 +55,18 @@ class LoginScreen extends StatelessWidget {
                 key: _fomkey,
                 child: Column(
                   children: [
-                    emailForm(),
+                    CustomFomField(
+                      'Email Adderss',
+                      TextInputType.emailAddress,
+                      1,
+                      (value) {},
+                      _emailController,
+                    ),
                   ],
                 ),
               ),
               h20,
-
-              PasswordForm(),
-
+              CustomPasswordField(),
               h30,
               GestureDetector(
                 onTap: () {
@@ -79,30 +77,14 @@ class LoginScreen extends StatelessWidget {
                   style: TextStyle(color: mainred, fontWeight: FontWeight.bold),
                 ),
               ),
-              //    h25,
-              // RichText(
-              //   text: TextSpan(
-              //     text: "Don't Have any Account ? ",
-              //     style: const TextStyle(
-              //       color: grey,
-              //     ),
-              //     children: [
-              //       TextSpan(
-              //         text: ' Register',
-              //         style: const TextStyle(
-              //             color: mainred, fontWeight: FontWeight.bold),
-              //         recognizer: TapGestureRecognizer()
-              //           ..onTap = () => Get.to(
-              //                 RegisteScreen(),
-              //               ),
-              //       )
-              //     ],
-              //   ),
-              // ),
               h30,
-              ShadowButton(
-                  onTap: () {
-                    Get.to(NavBarScreen());
+              CustomShadowButton( onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => NavBarScreen(),
+                      ),
+                    );
                     // bool isValid = _fomkey.currentState!.validate();
                     // if (isValid) {
 
@@ -113,17 +95,7 @@ class LoginScreen extends StatelessWidget {
                   textColor: bg,
                   width: double.infinity,
                   title: 'Login to access'),
-              // CustomButton(
-              //     textColor: white,
-              //     btncolor: mainred,
-              //     onPressed: () {
-              //       Get.to(NavBarScreen());
-              //       // bool isValid = _fomkey.currentState!.validate();
-              //       // if (isValid) {
-
-              //       // }
-              //     },
-              //     title: 'Login to access')
+             
             ],
           ),
         ),
@@ -131,28 +103,6 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
-//PASSWORD============================================
-  // ClayContainer passwordForm() {
-  //   return
-  //   // GestureDetector(
-  //   //   onTap: () {
-
-  //   //   },
-  //  //   child:
-
-  //       child: CustomPassword(
-  //         suffixIcon: Icon(Icons.visibility),
-  //       //   suffixIcon: Obx(
-  //       //  () {
-  //       //       return IconButton(onPressed: () {
-  //       //         authController.isvisible.value=!authController.isvisible.value;
-
-  //       //       }, icon:authController.isvisible.value? Icon(Icons.visibility):Icon(Icons.visibility_off));
-  //       //     }
-  //         // ),
-  //         controller: _passwodController,
-  //         maxline: 1,
-  //         textinputType: TextInputType.text,
   //         title: 'Password',
   //         validator: (value) {
   //           // if (value!.isEmpty) {
@@ -163,31 +113,17 @@ class LoginScreen extends StatelessWidget {
   //           //   return null;
   //           // }
   //         },
-  //       ),
 
-  //   );
-  // }
-
-  //EMAIL===========================================================
-
-  CustomTextForm emailForm() {
-    return 
-       CustomTextForm(
-        controller: _emailController,
-        maxline: 1,
-        textinputType: TextInputType.emailAddress,
-        title: 'Email Address',
-        validator: (value) {
-          // if (value == null) {
-          //   return "Required Field";
-          // } else if (!RegExp(
-          //         r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
-          //     .hasMatch(value)) {
-          //   return "Enter a valid email";
-          // } else {
-          //   return null;
-          // }
-        },
-    );
-  }
+  //       title: 'Email Address',
+  //       validator: (value) {
+  //         // if (value == null) {
+  //         //   return "Required Field";
+  //         // } else if (!RegExp(
+  //         //         r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
+  //         //     .hasMatch(value)) {
+  //         //   return "Enter a valid email";
+  //         // } else {
+  //         //   return null;
+  //         // }
+  //       },
 }

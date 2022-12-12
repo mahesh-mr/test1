@@ -78,8 +78,9 @@ class RefactorSarvey extends StatelessWidget {
         GenderSelector(),
       
       h30,
-      ShadowButton(onTap:onPressed, buttonColor: mainred, height: 
+      CustomShadowButton(onTap:onPressed, buttonColor: mainred, height: 
       40.h, textColor: bg, width: double.infinity, title: 'SUBMIT'),
+     
         //  CustomButton(
         //         onPressed: onPressed,
         //         title: 'SUBMIT',

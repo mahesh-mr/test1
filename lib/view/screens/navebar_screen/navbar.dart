@@ -30,19 +30,19 @@ class _NavBarScreenState extends State<NavBarScreen> {
         backgroundColor: bg,
         body: _pages[_currentSelectedIndex],
         bottomNavigationBar: Padding(
-          padding: const EdgeInsets.only(left: 50, right: 50, bottom: 30),
+          padding:  EdgeInsets.only(left: 50.w, right: 50.w, bottom: 20.h,top: 10.h),
           child: SizedBox(
             height: 40.h,
             child: Container(
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(30),
                   boxShadow: [
-                    BoxShadow(
-                      offset: Offset(8, -12),
-                      spreadRadius: -3,
-                      blurRadius: 11,
-                      color: Color.fromRGBO(252, 252, 252, 1),
-                    ),
+                    // BoxShadow(
+                    //   offset: Offset(8, -12),
+                    //   spreadRadius: -3,
+                    //   blurRadius: 11,
+                    //   color: Color.fromRGBO(252, 252, 252, 1),
+                    // ),
                     BoxShadow(
                       offset: Offset(-8, 9),
                       spreadRadius: -2,

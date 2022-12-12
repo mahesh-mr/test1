@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fps/controller/controller/onbording_controller.dart';
 import 'package:fps/controller/controller/qustion_pagae_controller/qustion_controller.dart';
 import 'package:fps/model/qustion_model.dart';
-import 'package:fps/view/screens/qution_air/list_qustions/page/page26.dart';
+import 'package:fps/view/screens/items_list/items_list.dart';
 import 'package:fps/view/screens/qution_air/list_qustions/withness_screen/withness_1_screen.dart';
 import 'package:fps/view/screens/qution_air/widgets/custom_appbar/custom_appbar.dart';
 import 'package:fps/view/screens/qution_air/widgets/custom_radio/radiobutton.dart';
 import 'package:fps/view/screens/widgets/shadow_button.dart';
 import 'package:fps/view/style/style.dart';
 
-import 'package:fps/view/screens/screen_register/widgets/custom_textform.dart';
+import 'package:fps/view/screens/screen%20_login/widgets/custom_textform.dart';
 import 'package:fps/view/screens/sreen_survay/widgets/survey_back_button.dart';
 import 'package:get/get.dart';
 
@@ -36,13 +35,8 @@ class QustionPage extends StatelessWidget {
           text:
               'Name of person who controlled FPS at the time of inspection and relationship with FPS?.',
           headaLine: '',
-          widget: CustomTextForm(
-            controller: nameController,
-            maxline: 1,
-            textinputType: TextInputType.text,
-            title: '',
-            validator: (value) {},
-          ),
+          widget: CustomFomField(
+              '', TextInputType.text, 1, (value) {}, nameController),
           bar: 0.08,
           number: 2
           // onPressed: () {
@@ -88,13 +82,8 @@ class QustionPage extends StatelessWidget {
       QustionModel(
           text: 'If so how many cards? ( Enter Card Numbers ).',
           headaLine: '',
-          widget: CustomTextForm(
-            controller: nameController,
-            maxline: 1,
-            textinputType: TextInputType.text,
-            title: '',
-            validator: (value) {},
-          ),
+          widget: CustomFomField(
+              '', TextInputType.text, 1, (value) {}, nameController),
           bar: 0.28,
           number: 7),
       //8==========================================
@@ -243,16 +232,15 @@ class QustionPage extends StatelessWidget {
               'As per KTPDS (Control) Order 2021 para 43 (I) has distribution of ration goods been done manually other than through e-pos without permission?.',
           headaLine: '',
           widget: GenderSelector(),
-          bar: 1.0000000000000002,
+          bar: 1.0,
           number: 25),
     ];
 
     final qustionContoller = QustionController();
 
     return Scaffold(
-   
       backgroundColor: bg,
-      appBar: CustomAppbar(),
+      appBar: CustomAppbar(height: 230.h),
       body: PageView.builder(
         physics: NeverScrollableScrollPhysics(),
         controller: qustionContoller.pagecontroller,
@@ -263,6 +251,7 @@ class QustionPage extends StatelessWidget {
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 40.w),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Row(
@@ -303,11 +292,10 @@ class QustionPage extends StatelessWidget {
                         : qustionsList[index].headaLine!,
                     style: welcomeText,
                   ),
+                  h15,
                   SizedBox(
-                    height: 20.h,
-                  ),
-                  SizedBox(
-                    height: 100.h,
+                    //   color: blue,
+                    height: 90.h,
                     width: 250.w,
                     child: Text(
                       qustionsList[index].text,
@@ -319,15 +307,12 @@ class QustionPage extends StatelessWidget {
 
                   qustionsList[index].widget,
 
-                  SizedBox(
-                    height: 30.h,
-                  ),
-                  ShadowButton(
-                      onTap: () {
+                  h35,
+                  CustomShadowButton( onTap: () {
                         bool lastpage = qustionContoller.selectedIndex.value ==
-                            qustionsList.length-1;
+                            qustionsList.length - 1;
                         if (lastpage) {
-                          Get.offAll(WitnessScreen1());
+                          Get.offAll(ItemsListHome());
                         } else {
                           qustionContoller.pagecontroller.nextPage(
                             duration: 550.milliseconds,
@@ -343,6 +328,7 @@ class QustionPage extends StatelessWidget {
                       textColor: bg,
                       width: double.infinity,
                       title: 'SUBMIT'),
+                 
                   // Padding(
                   //   padding: EdgeInsets.symmetric(horizontal: 40.w),
                   //   child: CustomButton(
@@ -365,9 +351,9 @@ class QustionPage extends StatelessWidget {
                             onPressed: () {
                               ('asdfasdfasdfsf');
                               qustionContoller.pagecontroller.previousPage(
-                            duration: 550.milliseconds,
-                            curve: Curves.ease,
-                          );
+                                duration: 550.milliseconds,
+                                curve: Curves.ease,
+                              );
                               // ignore: unused_local_variable
                             },
                             width: 60.w,

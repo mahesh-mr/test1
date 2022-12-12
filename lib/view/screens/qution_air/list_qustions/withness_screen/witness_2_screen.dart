@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:fps/view/screens/camerScreen/camera.dart';
+import 'package:fps/view/screens/items_list/items_list.dart';
 import 'package:fps/view/screens/qution_air/list_qustions/remark_screen/remark.dart';
 import 'package:fps/view/screens/qution_air/list_qustions/withness_screen/appbar/witness_appbar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -47,15 +49,14 @@ import 'package:get/get.dart';
               ),
           
               h40,
-              ShadowButton(
-                title: 'SUBMIT',
+            CustomShadowButton(  title: 'SUBMIT',
                 buttonColor: mainred,
                 height: 40.h,
                 width: double.infinity,
                 textColor: bg,
                 onTap: () {
                   Get.to(
-                    RemarkScreeen(),
+                    WitnessScreen2(),
                   );
                 },
               ),

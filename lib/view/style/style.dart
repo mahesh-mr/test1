@@ -75,4 +75,9 @@ final h65 = SizedBox(height: 65.h);
 
 //width dimentions========================================================================
 //=================================================================================
-final w10 = SizedBox(width: 10.h);
+final w10 = SizedBox(width: 10.w);
+final w30 = SizedBox(width: 30.w);
+final w60 = SizedBox(width: 60.w);
+final w80 = SizedBox(width: 80.w);
+final w130 = SizedBox(width: 130.w);final w150 = SizedBox(width: 150.w);final w170 = SizedBox(width: 170.w);
+

@@ -1,4 +1,3 @@
-
 // import 'package:flutter/cupertino.dart';
 // import 'package:fps/model/qustion_model.dart';
 // import 'package:fps/view/screens/qution_air/list_qustions/page/page10.dart';
@@ -202,7 +201,7 @@
 //       onPressed: () {
 //         Get.to(Page16());
 //       },
-//     ),   
+//     ),
 //         //17========================================
 //      QustionModel(
 //       text:
@@ -212,7 +211,7 @@
 //       onPressed: () {
 //         Get.to(Page17());
 //       },
-//     ),  
+//     ),
 //         //18========================================
 //       QustionModel(
 //       text:
@@ -222,7 +221,7 @@
 //       onPressed: () {
 //         Get.to(Page18());
 //       },
-//     ),    
+//     ),
 //         //19========================================
 //     QustionModel(
 //       text:
@@ -232,9 +231,9 @@
 //       onPressed: () {
 //         Get.to(Page19());
 //       },
-//     ),  
+//     ),
 //         //20========================================
-    
+
 //       QustionModel(
 //       text:
 //           'As per KTPDS (Control) Order 2021 para 42 (1) (II) is excessive price charged from beneficiaries for ration goods?.',
@@ -243,7 +242,7 @@
 //       onPressed: () {
 //         Get.to(Pages20());
 //       },
-//     ),   
+//     ),
 //     //21==================================
 //      QustionModel(
 //       text:
@@ -263,9 +262,9 @@
 //       onPressed: () {
 //         Get.to(Page22());
 //       },
-//     ), 
+//     ),
 //     //23=============================
-    
+
 //        QustionModel(
 //       text:
 //           'As per KTPDS (Control) Order 2021 para 42 (2) (VIII) willfully damage e-POS machine?.',
@@ -274,9 +273,9 @@
 //       onPressed: () {
 //         Get.to(Page23());
 //       },
-//     ), 
+//     ),
 //     //24=========================================
-    
+
 //        QustionModel(
 //       text:
 //           'As per KTPDS (Control) Order 2021 para 42 (2) (X) has unusable ration material been distributed?.',
@@ -285,9 +284,9 @@
 //       onPressed: () {
 //         Get.to(Page24());
 //       },
-//     ),  
+//     ),
 //     //25===========================================
-    
+
 //       QustionModel(
 //       text:
 //           'As per KTPDS (Control) Order 2021 para 43 (I) has distribution of ration goods been done manually other than through e-pos without permission?.',
@@ -296,18 +295,16 @@
 //       onPressed: () {
 //         Get.to(WitnessScreen1());
 //       },
-//     ),   
+//     ),
 //   ];
 // }
-
 
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
-class QustionController extends GetxController{
-
-    var selectedIndex = 0.obs;
- // bool get isLastPage => selectedIndex.value == onbordingLists.length - 1;
+class QustionController extends GetxController {
+  var selectedIndex = 0.obs;
+  // bool get isLastPage => selectedIndex.value == onbordingLists.length - 1;
   var pagecontroller = PageController();
 
   forwerdAction() {
@@ -315,19 +312,10 @@ class QustionController extends GetxController{
     // if (isLastPage) {
     // //  Get.offAll(LoginScreen());
     // } else {
-    
-      pagecontroller.nextPage(duration: 550.milliseconds, curve: Curves.ease);
+
+    pagecontroller.nextPage(duration: 550.milliseconds, curve: Curves.ease);
     // }
   }
-barScroll(){
-   double v=0;
-  for (int i = 0; i < selectedIndex.value; i++) {
-      v= v+0.04;
- 
-    print(v);
-  }
-}
 
-
-
+  
 }

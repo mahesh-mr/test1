@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fps/view/screens/screen_otp/otp_screen.dart';
-import 'package:fps/view/screens/screen_register/widgets/custom_textform.dart';
+import 'package:fps/view/screens/screen%20_login/widgets/custom_textform.dart';
 import 'package:fps/view/screens/screen_register/widgets/custombutton.dart';
+import 'package:fps/view/screens/widgets/shadow_button.dart';
 import 'package:fps/view/style/style.dart';
 import 'package:get/get.dart';
 
@@ -43,26 +44,26 @@ class ForgotScreen extends StatelessWidget {
             Stack(
               children: [
                 Container(
-                  height: 180.h,
+                  height: 250.h,
                   width: 200.w,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Container(
-                        height: 180.h,
+                        height: 250.h,
                         width: 140.w,
                         decoration: const BoxDecoration(
                           image: DecorationImage(
-                            image: AssetImage('assets/4.png'),
-                          ),
+                              image: AssetImage('assets/4.png'),
+                              fit: BoxFit.cover),
                         ),
                       ),
                     ],
                   ),
                 ),
                 Positioned(
-                  bottom: 45.h,
+                  bottom: 55.h,
                   left: 10.w,
                   child: Text(
                     "Forgot\nPassword",
@@ -71,7 +72,7 @@ class ForgotScreen extends StatelessWidget {
                   ),
                 ),
                 Positioned(
-                  bottom: 17,
+                  bottom: 27.h,
                   left: 10.w,
                   child: const Text(
                     "Password Recovery",
@@ -90,40 +91,37 @@ class ForgotScreen extends StatelessWidget {
               style: TextStyle(fontWeight: FontWeight.bold, color: grey),
             ),
             h25,
+
             Padding(
-                padding: EdgeInsets.symmetric(horizontal: 30.w),
-                child: ClayContainer(
-                  color: white,
-                  borderRadius: 50.r,
-                  depth: 40,
-                  parentColor: white,
-                  spread: 2,
-                  child: CustomTextForm(
-                    controller: emailController,
-                    maxline: 1,
-                    textinputType: TextInputType.emailAddress,
-                    title: 'Email Address',
-                    validator: (value) {
-                      // if (value == null) {
-                      //   return "Required Field";
-                      // } else if (!RegExp(
-                      //         r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
-                      //     .hasMatch(value)) {
-                      //   return "Enter a valid email";
-                      // } else {
-                      //   return null;
-                      // }
-                    },
-                  ),
-                )),
+              padding: EdgeInsets.symmetric(horizontal: 30.w),
+              child: CustomFomField('Email Address', TextInputType.emailAddress, 1,
+                  (value) {}, emailController),
+            ),
+
+            // if (value == null) {
+            //   return "Required Field";
+            // } else if (!RegExp(
+            //         r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
+            //     .hasMatch(value)) {
+            //   return "Enter a valid email";
+            // } else {
+            //   return null;
+            // }
+
             h30,
-            CustomButton(
-                onPressed: () {
-                  Get.to(OtpScreen());
+            CustomShadowButton(onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => OtpScreen(),
+                      ));
                 },
-                title: 'Send Link For Recovery',
-                btncolor: mainred,
-                textColor: white)
+                buttonColor: mainred,
+                height: 40.h,
+                width: double.infinity,
+                textColor: bg,
+                title: 'Send Link For Recovery')
+           
           ],
         ),
       ),

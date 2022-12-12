@@ -1,13 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:fps/model/onbording_model.dart';
 import 'package:fps/view/screens/screen%20_login/login_screen.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fps/view/style/style.dart';
 import 'package:get/get.dart';
 
 class onbordingController extends GetxController {
   var selectedIndex = 0.obs;
-  bool get  isLastPage => selectedIndex.value == onbordingLists.length - 1;
+  bool get isLastPage => selectedIndex.value == onbordingLists.length - 1;
   var pagecontroller = PageController();
 
   forwerdAction() {
@@ -15,7 +14,6 @@ class onbordingController extends GetxController {
     if (isLastPage) {
       Get.offAll(LoginScreen());
     } else {
-    
       pagecontroller.nextPage(duration: 550.milliseconds, curve: Curves.ease);
     }
   }

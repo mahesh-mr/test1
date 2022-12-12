@@ -13,24 +13,14 @@ class CustomRadio extends StatelessWidget {
     return Column(
       children: [
         Container(
-          decoration: const BoxDecoration(
-            boxShadow: [
-             
-   
-    BoxShadow(
-         offset: Offset(-5, 7),
-        spreadRadius: -7,
-        blurRadius: 5,
-        color: Color.fromRGBO(149, 147, 147, 1),
-    )
-    // ,  BoxShadow(
-    //     offset: Offset(-1, -7),
-    //     spreadRadius: -6,
-    //     blurRadius: 1,
-    //     color: Color.fromRGBO(255, 255, 255, 1),
-    // )
-            ]
-          ),
+          decoration: const BoxDecoration(boxShadow: [
+            BoxShadow(
+              offset: Offset(-5, 7),
+              spreadRadius: -7,
+              blurRadius: 5,
+              color: Color.fromRGBO(149, 147, 147, 1),
+            )
+          ]),
           child: Card(
               //    borderOnForeground:true ,
               color: _gender.isSelected ? mainred : white,
@@ -71,10 +61,9 @@ class _GenderSelectorState extends State<GenderSelector> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Container(
-          //  color: blue,
-          height: 57.h,
-
+        SizedBox(
+        //  color: yellow,
+          height: 62.h,
           child: ListView.builder(
               scrollDirection: Axis.horizontal,
               shrinkWrap: true,

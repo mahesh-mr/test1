@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:fps/view/screens/navebar_screen/navbar.dart';
 import 'package:fps/view/screens/qution_air/widgets/custom_clippath.dart';
+import 'package:fps/view/screens/screen_home/home_screen.dart';
 import 'package:fps/view/screens/widgets/custom_popupmenu.dart';
 import 'package:fps/view/style/style.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
-  CustomAppbar({super.key});
+  CustomAppbar({super.key,required this.height });double height;
   String cdate = DateFormat("dd-MM-yyy").format(DateTime.now());
 
   @override
@@ -16,8 +18,8 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       actions: [
         Padding(
-          padding: const EdgeInsets.only(
-            bottom: 190,
+          padding:  EdgeInsets.only(
+            bottom:180.h,
           ),
           child: PopupmenuButtonWidgets(
             color: bg,
@@ -25,22 +27,22 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
         )
       ],
       leading: Padding(
-        padding: const EdgeInsets.only(
-          bottom: 190,
+        padding:  EdgeInsets.only(
+          bottom:180.h,
         ),
         child: IconButton(
           onPressed: () {
-            Get.back();
+            Get.to( NavBarScreen());
           },
           icon: const Icon(
-            Icons.arrow_back_ios,
+            Icons.home,
             color: white,
           ),
         ),
       ),
       centerTitle: true,
       title: Padding(
-        padding: const EdgeInsets.only(bottom: 170),
+        padding:  EdgeInsets.only(bottom: 160.h),
         child: Column(
           children: [
             Text(
@@ -55,7 +57,7 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
           ],
         ),
       ),
-      toolbarHeight: 250,
+     toolbarHeight: 230.h,
       backgroundColor: Colors.transparent,
       elevation: 0.0,
       flexibleSpace: ClipPath(
@@ -63,7 +65,7 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
         child: Stack(
           children: [
             Container(
-              height: 400,
+              height: 300.h,
               width: MediaQuery.of(context).size.width,
               color: mainred,
             ),
@@ -114,6 +116,6 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
   // TODO: implement preferredSize
   Size get preferredSize => Size(
         double.infinity,
-        230.h,
+        height,
       );
 }

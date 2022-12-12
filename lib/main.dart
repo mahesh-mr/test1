@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fps/view/screens/page_view/page_view.dart';
-import 'package:fps/view/screens/screen_onboarding/onbording_screen.dart';
+import 'package:fps/view/screens/screen_home/home_screen.dart';
 import 'package:fps/view/screens/screen_splash/splash_screen.dart';
-
 import 'package:get/get.dart';
 
 void main() {

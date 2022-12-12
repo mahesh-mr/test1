@@ -48,8 +48,7 @@ class WitnessScreen1 extends StatelessWidget {
               ),
           
               h40,
-              ShadowButton(
-                title: 'SUBMIT',
+              CustomShadowButton(  title: 'SUBMIT',
                 buttonColor: mainred,
                 height: 40.h,
                 width: double.infinity,
@@ -60,6 +59,7 @@ class WitnessScreen1 extends StatelessWidget {
                   );
                 },
               ),
+            
             ],
           ),
         ),

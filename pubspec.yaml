@@ -38,6 +38,7 @@ dependencies:
   fradio_nullsafety: ^2.0.2
   get: ^4.6.5
   google_fonts: ^3.0.1
+  image_picker: ^0.8.6
   intl: ^0.17.0
   pin_code_fields: ^7.4.0
 
