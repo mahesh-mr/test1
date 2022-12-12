@@ -16,22 +16,6 @@ class OnbordingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
  
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     onbordingController onbordingcontroller = Get.put(onbordingController());
 
     return Scaffold(
