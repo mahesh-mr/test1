@@ -37,18 +37,28 @@ class CustomBackForword extends StatelessWidget {
         ),
         h20,
         CustomSurveyTextForm(
+          suffix: "",
+           onChanged: (p0) {
+              
+            },
           controller: controllerDepostit,
           textinputType: TextInputType.text,
           title: "Deposit in e-POS machine",
           validator: validatorDepostit,
         ),
-        CustomSurveyTextForm(
+        CustomSurveyTextForm(  suffix: "",
+           onChanged: (p0) {
+              
+            },
           controller: controllerPhysical,
           textinputType: TextInputType.text,
           title: "Physical stock",
           validator: validatorPhysical,
         ),
-        CustomSurveyTextForm(
+        CustomSurveyTextForm(  suffix: "",
+           onChanged: (p0) {
+              
+            },
           controller: controllerDiffrence,
           textinputType: TextInputType.text,
           title: "Difference",
@@ -58,9 +68,9 @@ class CustomBackForword extends StatelessWidget {
         CustomShadowButton(  onTap: () {},
             buttonColor: mainred,
             height: 40.h,
-            textColor: bg,
+        
             width: double.infinity,
-            title: 'SUBMIT'),
+            title:butenText(title: "SUBMIT", textColor: bg) ),
        
         h50,
         SizedBox(

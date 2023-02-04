@@ -1,16 +1,17 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:fps/view/style/style.dart';
 
 Widget CustomShadowButton({
-  required VoidCallback onTap,
-  required Color textColor,
+  required VoidCallback? onTap,
+  
   required Color buttonColor,
   required double width,
   required double height,
-  required String title,
+  required Widget title,
 }) {
-  return GestureDetector(
+  return InkWell(
     onTap: onTap,
     child: Container(
       height: height,
@@ -33,11 +34,24 @@ Widget CustomShadowButton({
             ),
           ]),
       child: Center(
-          child: Text(
-        title,
-        style: TextStyle(color: textColor, fontWeight: FontWeight.bold),
-        textAlign: TextAlign.center,
-      )),
+          child:title,
+      //      Text(
+      // titl,
+      //   style: TextStyle(color: textColor, fontWeight: FontWeight.bold),
+      //   textAlign: TextAlign.center,
+      // ),
+      ),
     ),
   );
+}
+Widget butenText({
+  required String title,required Color textColor,
+}){
+  return 
+       Text(
+      title,
+        style: TextStyle(color: textColor, fontWeight: FontWeight.bold),
+        textAlign: TextAlign.center,
+      );
+
 }

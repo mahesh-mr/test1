@@ -1,36 +1,66 @@
-import 'package:flutter/cupertino.dart';
-import 'package:fps/view/screens/camerScreen/camera.dart';
-import 'package:fps/view/screens/navebar_screen/navbar.dart';
-import 'package:fps/view/screens/qution_air/list_qustions/withness_screen/withness_1_screen.dart';
+import 'package:flutter/material.dart';
+import 'package:fps/controller/service/stock_ites_service/get_items_name.dart';
+import 'package:fps/model/get_items_model/get_item.dart';
+import 'package:fps/view/screens/camerScreen/camera_shop.dart';
 import 'package:get/get.dart';
 
-class ItemController extends GetxController{
-
-      var selectedIndex = 0.obs;
- bool get isLastPage => selectedIndex.value == itemsName.length - 1;
+class ItemController extends GetxController {
+  var selectedIndex = 0.obs;
+  bool get isLastPage => selectedIndex.value == getItemModel.length - 1;
   var pagecontroller = PageController();
 
+  forwerdPageJumb() {
+    pagecontroller.nextPage(
+      duration: 550.milliseconds,
+      curve: Curves.ease,
+    );
+  }
+
   forwerdAction() {
-    //bool isvaliod = fomliey.v.
     if (isLastPage) {
-  Get.offAll(CameraScreen());
+      Get.to(CameraShop());
+      // Navigator.pushReplacement(
+      //     context, MaterialPageRoute(builder: (context) => CameraShop()));
     } else {
-    
       pagecontroller.nextPage(duration: 550.milliseconds, curve: Curves.ease);
     }
   }
-    gotoHome() async {
+
+  gotoHome() async {
     await Future.delayed(
       const Duration(seconds: 50),
     );
   }
-  List<String> itemsName = [
-    'Pachari',
-    'Puzhukkalari',
-    'Kuthari',
-    'Gothamb',
-    'Aatta',
-    'Panchasara',
-    'kerosene',
-  ];
+
+  List<Rows> getItemModel = <Rows>[];
+  RxBool loding = true.obs;
+  Future<List<Rows>?> getItemsController() async {
+    try {
+      var data = await GetItemsNameService.getItemName();
+      loding.value = false;
+      return data!;
+    } catch (e) {
+      Get.snackbar('oopz', ' $e');
+      print(e);
+      print('catch bloc called');
+      loding.value = false;
+    }
+    return null;
+  }
+
+  @override
+  void onInit() {
+    getItemsController().then((value) => getItemModel = value!);
+    super.onInit();
+  }
+
+  // List<String> itemsName = [
+  //   'പച്ചരി',
+  //   'പുഴുക്കലരി',
+  //   'കുത്തരി',
+  //   'ഗോതമ്പ്',
+  //   'ആട്ട',
+  //   'പഞ്ചസാര',
+  //   'മണ്ണെണ്ണ',
+  // ];
 }

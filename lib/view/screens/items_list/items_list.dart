@@ -1,21 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fps/controller/controller/itemsController/itemes_controller.dart';
+import 'package:fps/controller/controller/itemscontroller/itemes_controller.dart';
+import 'package:fps/controller/controller/tost/tost.dart';
+import 'package:fps/controller/service/dioclint/token/token.dart';
+import 'package:fps/controller/service/stock_details/stock_details.dart';
+import 'package:fps/view/screens/camerScreen/camera_shop.dart';
+import 'package:fps/view/screens/camerScreen/camera_signature.dart';
+import 'package:fps/view/screens/items_list/widgets/itemforms/items_forms.dart';
 import 'package:fps/view/screens/qution_air/widgets/custom_appbar/custom_appbar.dart';
+import 'package:fps/view/screens/sreen_survay/widgets/survey_back_button.dart';
 import 'package:fps/view/screens/sreen_survay/widgets/survey_form_wiidget.dart';
 import 'package:fps/view/screens/widgets/shadow_button.dart';
+import 'package:fps/view/screens/witness_screen/withness_1_screen.dart';
 import 'package:fps/view/style/style.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
 class ItemsListHome extends StatelessWidget {
   ItemsListHome({
     super.key,
   });
-
-  final depositController = TextEditingController();
-  final stockController = TextEditingController();
-  final difrenceController = TextEditingController();
   final pageController = PageController();
+  final itemStorage = GetStorage();
+  String? survayId = GetLocalStorage.getfpsId('sId');
   @override
   Widget build(BuildContext context) {
     final itemController = Get.put(ItemController());
@@ -32,114 +39,147 @@ class ItemsListHome extends StatelessWidget {
           // ),
           // h10,
           Expanded(
-            child: PageView.builder(
-              controller: itemController.pagecontroller,
-              onPageChanged: itemController.selectedIndex,
-              physics: NeverScrollableScrollPhysics(),
-              itemCount: itemController.itemsName.length,
-              itemBuilder: (context, index) {
-                return SingleChildScrollView(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 40.w),
-                    child: Column(
+            child: Obx(() {
+              if (itemController.loding.value) {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              return PageView.builder(
+                controller: itemController.pagecontroller,
+                onPageChanged: itemController.selectedIndex,
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: itemController.getItemModel.length,
+                itemBuilder: (context, index) {
+                  return SingleChildScrollView(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 40.w),
+                      child: Column(
+                        children: [
+                          Text(
+                            itemController.getItemModel[index].name!,
+                            style: fontZ_30_black,
+                          ),
+                          h20,
+                          Container(
+                            height: 330,
+                            child: ItemForm(index: index),
+                          ),
+                          CustomShadowButton(
+                              onTap: () {
+                                print(
+                                    "${itemStorage.read('assignedquantity')}===qty");
+                                if (itemStorage.read('assignedquantity') !=
+                                    null) {
+                                  StockDetaisSercive.stockItemService(
+                                          survayId: survayId!,
+                                          itemId: itemController
+                                              .getItemModel[index].id
+                                              .toString(),
+                                          assignedQuandity: itemStorage
+                                              .read('assignedquantity'),
+                                          physicalStock:
+                                              itemStorage.read('physicalstock'),
+                                          diffrence: itemStorage
+                                              .read('calculation')
+                                              .toString())
+                                      .then((value) {
+                                    if (value == "success") {
+                                      itemStorage.remove('assignedquantity');
+                                      itemStorage.remove('physicalstock');
+                                      itemStorage.remove('calculation');
+                                      if (itemController
+                                              .getItemModel[index].id ==
+                                          7) {
+                                        Get.offAll(WitnessScreen1());
+                                      } else {
+                                        itemController.forwerdPageJumb();
+                                      }
+                                    } else {
+                                      TostClass.warningTost(context);
+                                    }
+                                  });
+                                  // }
+                                  print(
+                                      "${itemController.getItemModel.length}==");
+                                } else {
+                                  TostClass.warningTost(context);
+                                }
+                              },
+                              buttonColor: mainred,
+                              height: 40.h,
+                              width: double.infinity,
+                              title: butenText(title: "SUBMIT", textColor: bg)),
+                      h30,
+                  SizedBox(
+                    height: 20.h,
+                    width: double.infinity,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          itemController.itemsName[index],
-                          style: fontZ_30_black,
-                        ),
-                        h20,
-                        CustomSurveyTextForm(
-                          controller: depositController,
-                          textinputType: TextInputType.text,
-                          title: "Deposit in e-POS machine",
-                          validator: (value) {},
-                        ),
-                        h10,
-                        CustomSurveyTextForm(
-                          controller: stockController,
-                          textinputType: TextInputType.text,
-                          title: "Physical stock",
-                          validator: (value) {},
-                        ),
-                        h10,
-                        CustomSurveyTextForm(
-                          controller: difrenceController,
-                          textinputType: TextInputType.text,
-                          title: "Difference",
-                          validator: (value) {},
-                        ),
-                        h30,
-                        CustomShadowButton(  onTap: () {
-                              itemController.forwerdAction();
+                        SurvayBackButton(
+                            bg: lightblack,
+                            onPressed: () {
+                              ('asdfasdfasdfsf');
+                              itemController.pagecontroller.previousPage(
+                                duration: 550.milliseconds,
+                                curve: Curves.ease,
+                              );
                             },
-                            buttonColor: mainred,
-                            height: 40.h,
-                            textColor: bg,
-                            width: double.infinity,
-                            title: 'SUBMIT'),
-                        
-                        h40,
-                        SizedBox(
-                          height: 20.h,
-                          width: double.infinity,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: lightblack,
-                                  minimumSize: Size(60.w, 20.h),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20.r),
-                                  ),
+                            width: 60.w,
+                            height: 20.h,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.arrow_back_ios,
+                                  color: white,
+                                  size: 10.sp,
                                 ),
-                                onPressed: () {
-                                  itemController.pagecontroller.previousPage(
+                                const Text(
+                                  'Back',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w400,
+                                      color: white),
+                                ),
+                              ],
+                            )),
+                        SurvayBackButton(
+                          bg: mainred,
+                          onPressed: () {
+                            // qustionsList[index].isSubmited == false
+                            //     ? null
+                                //:
+                                 itemController.pagecontroller.nextPage(
                                     duration: 550.milliseconds,
                                     curve: Curves.ease,
                                   );
-                                },
-                                child: Wrap(
-                                  children: [
-                                    Icon(
-                                      Icons.arrow_back_ios,
-                                      color: white,
-                                      size: 10.sp,
-                                    ),
-                                    Text(
-                                      'Back',
-                                      style: TextStyle(fontSize: 10.sp),
-                                    ),
-                                  ],
+                          },
+                          width: 60.w,
+                          height: 20.h,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'Next',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  color:
+                                  //  qustionsList[index].isSubmited == false
+                                  //     ? white.withOpacity(.5)
+                                  //     :
+                                       white,
                                 ),
                               ),
-                              ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: mainred,
-                                  minimumSize: Size(60.w, 20.h),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20.r),
-                                  ),
-                                ),
-                                onPressed: () {
-                                  itemController.pagecontroller.nextPage(
-                                    duration: 550.milliseconds,
-                                    curve: Curves.ease,
-                                  );
-                                },
-                                child: Wrap(
-                                  children: [
-                                    Text(
-                                      'Next',
-                                      style: TextStyle(fontSize: 10.sp),
-                                    ),
-                                    Icon(
-                                      Icons.arrow_forward_ios,
-                                      color: white,
-                                      size: 10.sp,
-                                    ),
-                                  ],
-                                ),
+                              w5,
+                              Icon(
+                                Icons.arrow_forward_ios,
+                                color: 
+                                // qustionsList[index].isSubmited == false
+                                //     ? white.withOpacity(.5)
+                                //     : 
+                                    white,
+                                size: 10.sp,
                               ),
                             ],
                           ),
@@ -147,9 +187,139 @@ class ItemsListHome extends StatelessWidget {
                       ],
                     ),
                   ),
-                );
-              },
-            ),
+                          // SizedBox(
+                          //   height: 20.h,
+                          //   width: double.infinity,
+                          //   child: Row(
+                          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          //     children: [
+                          //       SurvayBackButton(
+                          //           width: 60.w,
+                          //           height: 20.h,
+                          //           child: Row(
+                          //             mainAxisAlignment:
+                          //                 MainAxisAlignment.center,
+                          //             children: [
+                          //               Icon(
+                          //                 Icons.arrow_back_ios,
+                          //                 color: white,
+                          //                 size: 10.sp,
+                          //               ),
+                          //               Text(
+                          //                 'Back',
+                          //                 style: TextStyle(
+                          //                     fontWeight: FontWeight.w400,
+                          //                     color: white),
+                          //               ),
+                          //             ],
+                          //           ),
+                          //           onPressed: () {
+                          //             itemController.pagecontroller
+                          //                 .previousPage(
+                          //               duration: 550.milliseconds,
+                          //               curve: Curves.ease,
+                          //             );
+                          //           },
+                          //           bg: lightblack),
+
+                          //       // ElevatedButton(
+                          //       //   style: ElevatedButton.styleFrom(
+                          //       //     backgroundColor: lightblack,
+                          //       //     minimumSize: Size(60.w, 20.h),
+                          //       //     shape: RoundedRectangleBorder(
+                          //       //       borderRadius: BorderRadius.circular(20.r),
+                          //       //     ),
+                          //       //   ),
+                          //       //   onPressed: () {
+                          //       //     itemController.pagecontroller.previousPage(
+                          //       //       duration: 550.milliseconds,
+                          //       //       curve: Curves.ease,
+                          //       //     );
+                          //       //   },
+                          //       //   child: Wrap(
+                          //       //     children: [
+                          //       //       Icon(
+                          //       //         Icons.arrow_back_ios,
+                          //       //         color: white,
+                          //       //         size: 10.sp,
+                          //       //       ),
+                          //       //       Text(
+                          //       //         'Back',
+                          //       //         style: TextStyle(fontSize: 10.sp),
+                          //       //       ),
+                          //       //     ],
+                          //       //   ),
+                          //       // ),
+                          //       SurvayBackButton(
+                          //         bg: mainred,
+                          //         onPressed: () {
+                          //           // print("${itemStorage.read(
+                          //           //   'assignedquantity',
+                          //           // )}====1");
+                          //           // print("${itemStorage.read(
+                          //           //   'physicalstock',
+                          //           // )}====1");
+                          //           // print("${itemStorage.read(
+                          //           //   'calculation',
+                          //           // )}====1");
+
+                          //         },
+                          //         width: 60.w,
+                          //         height: 20.h,
+                          //         child: Row(
+                          //           mainAxisAlignment: MainAxisAlignment.center,
+                          //           children: [
+                          //             Text('Next',
+                          //                 style: TextStyle(
+                          //                     fontWeight: FontWeight.w400,
+                          //                     color: white)),
+                          //             w5,
+                          //             Icon(
+                          //               Icons.arrow_forward_ios,
+                          //               color: white,
+                          //               size: 10.sp,
+                          //             ),
+                          //           ],
+                          //         ),
+                          //       ),
+                          //       // ElevatedButton(
+                          //       //   style: ElevatedButton.styleFrom(
+                          //       //     backgroundColor: mainred,
+                          //       //     minimumSize: Size(60.w, 20.h),
+                          //       //     shape: RoundedRectangleBorder(
+                          //       //       borderRadius: BorderRadius.circular(20.r),
+                          //       //     ),
+                          //       //   ),
+                          //       //   onPressed: () {
+                          //       //     itemController.pagecontroller.nextPage(
+                          //       //       duration: 550.milliseconds,
+                          //       //       curve: Curves.ease,
+                          //       //     );
+                          //       //   },
+                          //       //   child: Wrap(
+                          //       //     children: [
+                          //       //       Text(
+                          //       //         'Next',
+                          //       //         style: TextStyle(fontSize: 10.sp),
+                          //       //       ),
+                          //       //       Icon(
+                          //       //         Icons.arrow_forward_ios,
+                          //       //         color: white,
+                          //       //         size: 10.sp,
+                          //       //       ),
+                          //       //     ],
+                          //       //   ),
+                          //       // ),
+                          //     ],
+                          //   ),
+                          // ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              );
+            }),
           )
         ],
       ),

@@ -1,309 +1,249 @@
 import 'package:clay_containers/clay_containers.dart';
 import 'package:flutter/material.dart';
 import 'package:fps/controller/controller/home_controller.dart/home_controller.dart';
+import 'package:fps/controller/controller/survey_controller/position_controller.dart';
+import 'package:fps/controller/controller/tost/tost.dart';
+import 'package:fps/controller/service/dioclint/token/token.dart';
+import 'package:fps/controller/service/home_service/start_survay_survice/start_survay_service.dart';
 import 'package:fps/view/screens/screen_home/stock_items.dart';
 import 'package:fps/view/screens/sreen_survay/survay_screen.dart';
 import 'package:fps/view/screens/widgets/custom_dropdown.dart';
-import 'package:fps/view/screens/widgets/custom_popupmenu.dart';
+import 'package:fps/view/screens/widgets/popup_menu/popup_menu.dart';
 import 'package:fps/view/screens/widgets/shadow_button.dart';
 import 'package:fps/view/style/style.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
-
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-final homecontroller = Get.put(HomeController());
-bool _switchValue = false;
-
-class _HomeScreenState extends State<HomeScreen> {
-  List<String> talukItems = [
-    'TALUK',
-    'TALUK 1',
-    'TALUK 2',
-    'TALUK 3',
-    'TALUK 4',
-    'TALUK 5',
-    'TALUK 6'
-  ];
-  String talukvalues = 'TALUK';
-
-  // var districtItems = [
-  //   'DISTRICT',
-  //   'DISTRICT 1',
-  //   'DISTRICT 2',
-  //   'DISTRICT 3',
-  //   'DISTRICT 4',
-  //   'DISTRICT 5',
-  //   'DISTRICT 6'
-  // ];
-  // String districtValue = 'DISTRICT';
-  var firkaitems = [
-    'FIRKA',
-    'FIRKA 1',
-    'FIRKA 2',
-    'FIRKA 3',
-    'FIRKA 4',
-    'FIRKA 5',
-    'FIRKA 6'
-  ];
-  String firkaValue = 'FIRKA';
+class HomeScreen extends StatelessWidget {
+  HomeScreen({super.key});
 
   final number = TextEditingController();
   final positions = TextEditingController();
   final inspectorname = TextEditingController();
 
-  bool isVisble = true;
-  final HomeController homecontroller = Get.put(HomeController());
+  final homecontroller = Get.put(HomeController());
+  final positionController = Get.put(PositionController());
+
+  final survayData = GetStorage();
+  String? userIds = GetLocalStorage.getUserIdAndToken('id');
+  String? userId = GetLocalStorage.getUserIdAndToken('id');
+   String cdate = DateFormat("dd-MM-yyy").format(DateTime.now());
+
   @override
   Widget build(BuildContext context) {
-  
     return Scaffold(
       backgroundColor: bg,
       appBar: AppBar(
         centerTitle: true,
-     elevation: 0,
+        elevation: 0,
         backgroundColor: bg,
         title: Text(
           "CIVIL SUPPLIES",
           style: appText,
         ),
         actions: [
-          PopupmenuButtonWidgets(color: mainred),
+          PopupHome(
+            color: mainred,
+          ),
         ],
       ),
-      body: GetBuilder<HomeController>(builder: (controller) {
-        return SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 10.h),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Stack(
-                  children: [
-                    Container(
-                      //      color: blue,
-
-                      height: 100.h,
-                      width: 200.w,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Container(
-                            height: 100.h,
-                            width: 130.w,
-                            decoration: const BoxDecoration(
-                              image: DecorationImage(
-                                image: AssetImage('assets/6.png'),
+      body: GetBuilder<HomeController>(
+        dispose: (_) {
+          homecontroller.districtValue = null;
+          homecontroller.talukvalues = null;
+          homecontroller.firkaValue = null;
+        },
+        builder: (controller) {
+          return SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: 10.h),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Stack(
+                    children: [
+                      SizedBox(
+                        height: 100.h,
+                        width: 200.w,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Container(
+                              height: 100.h,
+                              width: 130.w,
+                              decoration: const BoxDecoration(
+                                image: DecorationImage(
+                                  image: AssetImage('assets/6.png'),
+                                ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                    Positioned(
-                      bottom: 25.h,
-                      left: 15.w,
-                      child: Text(
-                        "Start\nSurvey",
-                        style: welcomeText,
-                      ),
-                    )
-                  ],
-                ),
-                h10,
-                const Text(
-                  "Survey For Inspections Of\nRation Shops Across Kerala",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontWeight: FontWeight.bold, color: grey),
-                ),
-                h20,
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 40.h),
-                  child: Column(
-                    children: [
-                      buttons(),
-                      h20,
-                      district(controller),
-                      h20,
-                      taluk(controller),
-                      h20,
-                      firka(controller),
-                      h20,
-                      bottomSheet(context),
-                      h30,
-                      CustomShadowButton(
-                        title: 'Start Survey',
-                        buttonColor: mainred,
-                        height: 40.h,
-                        width: double.infinity,
-                        textColor: bg,
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => SurveyScreen(),
-                              ));
-                          // Get.to(
-                          //   SurveyScreen(),
-                          // );
-                        },
-                      ),
+                      Positioned(
+                        bottom: 25.h,
+                        left: 15.w,
+                        child: Text(
+                          "Start\nSurvey",
+                          style: welcomeText,
+                        ),
+                      )
                     ],
                   ),
-                ),
-              ],
-            ),
-          ),
-        );
-      }),
-    );
-  }
-
-  ClayContainer firka(HomeController controller) {
-    return ClayContainer(
-      color: white,
-      borderRadius: 50.r,
-      depth: 40,
-      parentColor: white,
-      spread: 6,
-      curveType: CurveType.none,
-      width: double.infinity,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24),
-        child: DropdownButtonHideUnderline(
-          child: DropdownButton(
-            hint: Text('FIRKA'),
-            elevation: 6,
-            borderRadius: BorderRadius.circular(20),
-            alignment: AlignmentDirectional.center,
-            style: TextStyle(fontWeight: FontWeight.w600, color: grey),
-            value: controller.firkaValue,
-            icon: const Icon(Icons.keyboard_arrow_down),
-            items: List.generate(
-              controller.firkaitems.length,
-              (index) => DropdownMenuItem(
-                value: controller.firkaitems[index],
-                child: Text(
-                  controller.firkaitems[index],
-                ),
+                  h10,
+                  const Text(
+                    "Survey for inspections Of\nRation shops across kerala",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontWeight: FontWeight.bold, color: grey),
+                  ),
+                  h30,
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 40.h),
+                    child: Column(
+                      children: [
+                        buttons(),
+                        h30,
+                        districtDropdown(),
+                        h30,
+                        talukDropdown(),
+                        h30,
+                        firkaDropdown(),
+                        h50,
+                        CustomShadowButton(
+                          title:
+                              butenText(title: 'Start Survey', textColor: bg),
+                          buttonColor: mainred,
+                          height: 40.h,
+                          width: double.infinity,
+                          onTap: () {
+                            //    DateTime tempDate = new DateFormat("yyyy-MM-dd hh:mm:ss").parse(savedDateString);
+                            String dates = DateFormat("yyyy-MM-dd hh:mm:ss")
+                                .format(controller.selectedDate.value)
+                                .toString();
+                            if (controller.districtValue != null &&
+                                controller.talukvalues != null &&
+                                controller.firkaValue != null) {
+                              survayData.write(
+                                  "districtValue", controller.districtValue);
+                              survayData.write(
+                                  "talukvalues", controller.talukvalues);
+                              survayData.write(
+                                  "firkaValue", controller.firkaValue);
+                              survayData.write("dateFormat", dates);
+                              print("${survayData.read(
+                                "dateFormat",
+                              )}=====");
+                              print("${  survayData.read("talukvalues")}=====dis");
+                              print(controller.firkaValue);
+                              print(dates);
+                              Get.to(SurveyScreen());
+                            } else {
+                              if (controller.districtValue == null) {
+                                  TostClass.customWarningTost(context, 'district');
+                              }else if(controller.talukvalues == null){
+TostClass.customWarningTost(context, 'taluk');
+                              }else if(controller.firkaValue == null){
+TostClass.customWarningTost(context, 'firka');
+                              }else{
+                                TostClass.warningTost(context);
+                              }
+                           
+                           //   TostClass.warningTost(context);
+                              // Get.snackbar(
+                              //     "Warning", "Please fill the all feilds");
+                            }
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ),
-            onChanged: (String? newValue) {
-              controller.dropdownValueChanging(newValue!, 'FIRKA');
-            },
-          ),
-        ),
+          );
+        },
       ),
     );
   }
 
-  ClayContainer taluk(HomeController controller) {
-    return ClayContainer(
-      color: white,
-      borderRadius: 50.r,
-      depth: 40,
-      parentColor: white,
-      spread: 6,
-      curveType: CurveType.none,
-      width: double.infinity,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24),
-        child: DropdownButtonHideUnderline(
-          child: DropdownButton(
-            hint: Text('TALUK'),
-            elevation: 6,
-            borderRadius: BorderRadius.circular(20),
-            alignment: AlignmentDirectional.center,
-            style: TextStyle(fontWeight: FontWeight.w600, color: grey),
-            value: controller.talukvalues,
-            icon: const Icon(Icons.keyboard_arrow_down),
-            items: List.generate(
-              controller.talukItems.length,
-              (index) => DropdownMenuItem(
-                value: controller.talukItems[index],
-                child: Text(
-                  controller.talukItems[index],
-                ),
-              ),
-            ),
-            onChanged: (String? newValue) {
-              controller.dropdownValueChanging(newValue!, 'TALUK');
-            },
-          ),
-        ),
-      ),
-    );
+  CustomDropdown districtDropdown() {
+    return CustomDropdown(
+        onpressed: (String? newValue) {
+          print("$userIds====id true");
+          print("$userId====id orginal");
+          homecontroller.talukvalues = null;
+          homecontroller.dropdownValueChanging(newValue!, 'District');
+          print("${newValue} =====district");
+          homecontroller.tempTalukList = homecontroller.talukList
+              .where((element) =>
+                  element.districtId.toString() ==
+                  homecontroller.districtValue.toString())
+              .toList();
+        },
+        value: homecontroller.districtValue,
+        items: homecontroller.districtList.map((e) {
+          return DropdownMenuItem(
+            value: e.id.toString(),
+            child: Text(e.name!),
+          );
+        }).toList(),
+        hint: 'District');
   }
 
-  ClayContainer district(HomeController controller) {
-    return ClayContainer(
-      color: white,
-      borderRadius: 50.r,
-      depth: 40,
-      parentColor: white,
-      spread: 6,
-      curveType: CurveType.none,
-      width: double.infinity,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24),
-        child: DropdownButtonHideUnderline(
-          child: DropdownButton(
-            hint: Text('DISTRICT'),
-            elevation: 6,
-            borderRadius: BorderRadius.circular(20),
-            alignment: AlignmentDirectional.center,
-            style: TextStyle(fontWeight: FontWeight.w600, color: grey),
-            value: controller.districtValue,
-            icon: const Icon(Icons.keyboard_arrow_down),
-            items: List.generate(
-              controller.districtItems.length,
-              (index) => DropdownMenuItem(
-                value: controller.districtItems[index],
-                child: Text(
-                  controller.districtItems[index],
-                ),
-              ),
-            ),
-            onChanged: (String? newValue) {
-              controller.dropdownValueChanging(newValue!, 'DISTRICT');
-            },
-          ),
-        ),
-      ),
-    );
+  CustomDropdown talukDropdown() {
+    return CustomDropdown(
+        onpressed: (String? newValue) {
+          homecontroller.firkaValue = null;
+          homecontroller.dropdownValueChanging(newValue!, 'Taluk');
+          homecontroller.tempFrikaList = homecontroller.firkaList
+              .where((element) =>
+                  element.talukId.toString() ==
+                  homecontroller.talukvalues.toString())
+              .toList();
+
+          print("${newValue} ==============tal");
+        },
+        value: homecontroller.talukvalues,
+        items: homecontroller.tempTalukList.map((e) {
+          return DropdownMenuItem(
+            value: e.id.toString(),
+            child: Text(e.name!),
+          );
+        }).toList(),
+        hint: 'Taluk');
   }
 
-  Row bottomSheet(BuildContext context) {
-    return Row(
-      children: [
-        Switch(
-          activeColor: mainred,
-          value: _switchValue,
-          onChanged: (value) {
-            setState(() {
-              _switchValue = value;
-            });
-            if (_switchValue == true) {
-              Get.to(StoreItems());
-            }
-          },
-        ),
-//txt=================================================================
-//==============================================================================
-        const Text(
-          'Is it an accompanied inspected?.',
-          style: TextStyle(color: grey),
-        ),
-      ],
-    );
+  CustomDropdown firkaDropdown() {
+    return CustomDropdown(
+        onpressed: (String? newValue) {
+          positionController.fpsValue = null;
+          homecontroller.dropdownValueChanging(newValue!, 'Firka');
+          positionController.tempfpsNumberList = positionController
+              .fpsNumberList
+              .where((element) =>
+                  element.firka.toString() ==
+                  homecontroller.firkaValue.toString())
+              .toList();
+          print("${newValue} ==============fir");
+          print(
+              "${positionController.tempfpsNumberList.length}  ==fps num len");
+          print(
+              "${positionController.tempfpsNumberList.map((e) => e.fpsNo)}  ==fps num fir");
+          positionController.tempfpsNumberList
+              .map((e) => print("${e.firka}===fps fir"));
+        },
+        value: homecontroller.firkaValue,
+        items: homecontroller.tempFrikaList.map((e) {
+          return DropdownMenuItem(
+            child: Text(e.name!),
+            value: e.id.toString(),
+          );
+        }).toList(),
+        hint: 'Firka');
   }
 
 //buttons=========================================================================
@@ -318,21 +258,22 @@ class _HomeScreenState extends State<HomeScreen> {
           style: TextStyle(fontWeight: FontWeight.w600, color: grey),
         ),
         w10,
-        Obx(
-          () {
-            return CustomShadowButton(
+        // Obx(
+        //   () {
+            // String formateDates = DateFormat("dd-MM-yyyy")
+            //     .format(homecontroller.selectedDate.value)
+            //     .toString();
+           // return
+             CustomShadowButton(
                 onTap: () {
-                  homecontroller.choseDate();
+                //  homecontroller.choseDate();
                 },
                 buttonColor: mainred,
                 height: 23.h,
-                textColor: bg,
                 width: 150.w,
-                title: DateFormat("dd-MM-yyyy")
-                    .format(homecontroller.selectedDate.value)
-                    .toString());
-          },
-        ),
+                title: butenText(title: cdate, textColor: bg),)
+         // },
+       // ),
       ],
     );
   }

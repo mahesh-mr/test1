@@ -1,21 +1,20 @@
-
 import 'package:flutter/material.dart';
-class QustionModel{
+
+class QustionModel {
   String text;
-  String? headaLine; 
-  Widget widget;
+  String? headaLine;
   double bar;
   int number;
-  // VoidCallback onPressed;
+  bool? isSelectedYes;
+  bool isSubmited;
 
   QustionModel({
-    required this.text,required this.widget,this.headaLine,required this.bar,required this.number
-    //required this.onPressed
+    required this.text,
+    this.headaLine,
+    required this.bar,
+    required this.number,
+    this.isSelectedYes,
+    this.isSubmited=false,
+   
   });
-
-
-
-
-
-
 }

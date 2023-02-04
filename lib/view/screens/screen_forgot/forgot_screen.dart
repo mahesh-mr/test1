@@ -1,10 +1,8 @@
-import 'package:clay_containers/clay_containers.dart';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fps/view/screens/screen_otp/otp_screen.dart';
 import 'package:fps/view/screens/screen%20_login/widgets/custom_textform.dart';
-import 'package:fps/view/screens/screen_register/widgets/custombutton.dart';
 import 'package:fps/view/screens/widgets/shadow_button.dart';
 import 'package:fps/view/style/style.dart';
 import 'package:get/get.dart';
@@ -94,8 +92,19 @@ class ForgotScreen extends StatelessWidget {
 
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 30.w),
-              child: CustomFomField('Email Address', TextInputType.emailAddress, 1,
-                  (value) {}, emailController),
+              child:CustomFomField(controller: emailController,
+               textinputType: TextInputType.emailAddress,
+                validator: (value) {
+                  
+                },
+                 onChanged: (p0) {
+                   
+                 },
+                  maxline: 1,
+                   titles: 'Email Address')
+              
+              
+             ,
             ),
 
             // if (value == null) {
@@ -119,8 +128,8 @@ class ForgotScreen extends StatelessWidget {
                 buttonColor: mainred,
                 height: 40.h,
                 width: double.infinity,
-                textColor: bg,
-                title: 'Send Link For Recovery')
+           
+                title:butenText(title: 'Send Link For Recovery', textColor:   bg,) )
            
           ],
         ),

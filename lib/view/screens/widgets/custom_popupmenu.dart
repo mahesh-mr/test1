@@ -1,6 +1,5 @@
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
-import 'package:fps/view/style/style.dart';
 
 class PopupmenuButtonWidgets extends StatelessWidget {
   PopupmenuButtonWidgets({
@@ -9,7 +8,7 @@ class PopupmenuButtonWidgets extends StatelessWidget {
   }) : super(key: key);
   final Color color;
 
-  List<String> popupItems = ["Privacy Policy", "Terms & Conditions", 'LogOut'];
+  List<String> popupItems = ["Privacy Policy", "Terms & Conditions", 'Log Out'];
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +23,7 @@ class PopupmenuButtonWidgets extends StatelessWidget {
       onSelected: (value) {
         switch (value) {
           case "Privacy Policy":
+          
             break;
           case "Terms & Conditions":
             break;

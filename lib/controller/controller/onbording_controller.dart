@@ -4,7 +4,7 @@ import 'package:fps/view/screens/screen%20_login/login_screen.dart';
 import 'package:fps/view/style/style.dart';
 import 'package:get/get.dart';
 
-class onbordingController extends GetxController {
+class OnbordingController extends GetxController {
   var selectedIndex = 0.obs;
   bool get isLastPage => selectedIndex.value == onbordingLists.length - 1;
   var pagecontroller = PageController();

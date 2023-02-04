@@ -1,5 +1,6 @@
+import 'package:clay_containers/clay_containers.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
-import 'package:fps/controller/controller/authController/auth_controller.dart';
+import 'package:fps/controller/service/auth_service/auth_service.dart';
 import 'package:fps/view/screens/navebar_screen/navbar.dart';
 import 'package:fps/view/screens/screen_forgot/forgot_screen.dart';
 import 'package:fps/view/screens/screen%20_login/widgets/custom_textform.dart';
@@ -11,11 +12,16 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
   final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
   final _fomkey = GlobalKey<FormState>();
-  final authController = Get.put(AuthController());
+  final authController = Get.put(AuthService());
+  //commenController = Get.put(commenController());
 
   @override
   Widget build(BuildContext context) {
+    // _emailController.text = "admin2@gmail.com";
+    // _passwordController.text = "123456";
+
     return Scaffold(
       backgroundColor: bg,
       body: SingleChildScrollView(
@@ -24,10 +30,6 @@ class LoginScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text(
-                "Sign in",
-                style: TextStyle(fontWeight: FontWeight.bold, color: grey),
-              ),
               Container(
                 height: 180.h,
                 width: 200.w,
@@ -55,47 +57,52 @@ class LoginScreen extends StatelessWidget {
                 key: _fomkey,
                 child: Column(
                   children: [
-                    CustomFomField(
-                      'Email Adderss',
-                      TextInputType.emailAddress,
-                      1,
-                      (value) {},
-                      _emailController,
-                    ),
+                    emailFeild(emailController: _emailController),
+                    h20,
+                    password(),
+                    h30,
+                    // GestureDetector(
+                    //   onTap: () {
+                    //     Get.to(ForgotScreen());
+                    //   },
+                    //   child: const Text(
+                    //     'Forgot Password',
+                    //     style: TextStyle(
+                    //         color: mainred, fontWeight: FontWeight.bold),
+                    //   ),
+                    // ),
+                    h30,
+                    Obx(() {
+                      if (authController.isLoading.value) {
+                        Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                      return CustomShadowButton(
+                          onTap: () {
+                            bool isValid = _fomkey.currentState!.validate();
+                            if (isValid) {
+                              authController
+                                  .loginUser(
+                                      email: _emailController.text,
+                                      password: _passwordController.text,
+                                      context: context)
+                                  .then((value) {
+                                if (value == "success") {
+                                  Get.offAll(NavBarScreen());
+                                }
+                              });
+                            }
+                          },
+                          buttonColor: mainred,
+                          height: 40.h,
+                          width: double.infinity,
+                          title: butenText(
+                              title: 'Login to Access', textColor: bg));
+                    }),
                   ],
                 ),
               ),
-              h20,
-              CustomPasswordField(),
-              h30,
-              GestureDetector(
-                onTap: () {
-                  Get.to(ForgotScreen());
-                },
-                child: const Text(
-                  'Forgot Password',
-                  style: TextStyle(color: mainred, fontWeight: FontWeight.bold),
-                ),
-              ),
-              h30,
-              CustomShadowButton( onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => NavBarScreen(),
-                      ),
-                    );
-                    // bool isValid = _fomkey.currentState!.validate();
-                    // if (isValid) {
-
-                    // }
-                  },
-                  buttonColor: mainred,
-                  height: 40.h,
-                  textColor: bg,
-                  width: double.infinity,
-                  title: 'Login to access'),
-             
             ],
           ),
         ),
@@ -103,27 +110,98 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
-  //         title: 'Password',
-  //         validator: (value) {
-  //           // if (value!.isEmpty) {
-  //           //   return "Password minimum  1 length";
-  //           // } else if (!RegExp(r'(^[a-z A-Z]+$)').hasMatch(value)) {
-  //           //   return 'valid Passsworsd';
-  //           // } else {
-  //           //   return null;
-  //           // }
-  //         },
+  Obx password() {
+    return Obx(() {
+      return ClayContainer(
+        color: white,
+        borderRadius: 50.r,
+        depth: 40,
+        parentColor: white,
+        spread: 2,
+        child: TextFormField(
+          obscureText: authController.isvisible.value,
+          controller: _passwordController,
+          validator: (value) {
+            if (value!.isEmpty) {
+              return "        Password minimum  1 length";
+            }
+            // else if (!RegExp(r'(^[a-z A-Z]+$)').hasMatch(value)) {
+            //   return 'valid Passsworsd';
+            // }
+            else {
+              return null;
+            }
+          },
+          textAlign: TextAlign.center,
+          decoration: InputDecoration(
+            suffixIcon: GestureDetector(
+              onTap: () {
+                authController.isvisible.value =
+                    !authController.isvisible.value;
+              },
+              child: authController.isvisible.value
+                  ? const Icon(
+                      Icons.visibility,
+                      color: mainred,
+                    )
+                  : const Icon(
+                      Icons.visibility_off,
+                      color: mainred,
+                    ),
+            ),
+            contentPadding: EdgeInsets.all(5.w),
+            enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(40.r),
+                borderSide: const BorderSide(color: lightgrey)),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(40.r),
+              borderSide: const BorderSide(color: lightgrey),
+            ),
+            errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(40.r),
+              borderSide: const BorderSide(color: red),
+            ),
+            hintText: "Password",
+            fillColor: white,
+            focusColor: white,
+            filled: true,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(40.r),
+            ),
+          ),
+        ),
+      );
+    });
+  }
+}
 
-  //       title: 'Email Address',
-  //       validator: (value) {
-  //         // if (value == null) {
-  //         //   return "Required Field";
-  //         // } else if (!RegExp(
-  //         //         r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
-  //         //     .hasMatch(value)) {
-  //         //   return "Enter a valid email";
-  //         // } else {
-  //         //   return null;
-  //         // }
-  //       },
+class emailFeild extends StatelessWidget {
+  const emailFeild({
+    Key? key,
+    required TextEditingController emailController,
+  })  : _emailController = emailController,
+        super(key: key);
+
+  final TextEditingController _emailController;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomFomField(
+        controller: _emailController,
+        textinputType: TextInputType.emailAddress,
+        validator: (value) {
+          if (value == null) {
+            return "                 Required Field";
+          } else if (!RegExp(
+                  r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
+              .hasMatch(value)) {
+            return "                       Enter a valid email";
+          } else {
+            return null;
+          }
+        },
+        onChanged: (p0) {},
+        maxline: 1,
+        titles: 'Email Address');
+  }
 }

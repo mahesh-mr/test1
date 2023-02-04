@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fps/view/style/style.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -25,6 +26,7 @@ class BotosheetForm extends StatelessWidget {
      keyboardType:textinputType ,
       controller: controller,
       validator: validator,
+        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
 
       decoration: InputDecoration(
         counterStyle: TextStyle(color:bg),

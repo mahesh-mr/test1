@@ -1,12 +1,18 @@
 import 'package:clay_containers/clay_containers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fps/controller/controller/survey_controller/position_controller.dart';
+import 'package:fps/controller/controller/tost/tost.dart';
+import 'package:fps/controller/service/accompaned_service/accompaned_service.dart';
+import 'package:fps/controller/service/dioclint/token/token.dart';
 import 'package:fps/model/dropdown_model/dropdow.dart';
 import 'package:fps/view/screens/screen_home/widgets/botomfom.dart';
 import 'package:fps/view/screens/screen_home/widgets/custom_inspection_form.dart';
 import 'package:fps/view/screens/screen_register/widgets/custombutton.dart';
-import 'package:fps/view/screens/widgets/custom_dropdown.dart';
+import 'package:fps/view/screens/sreen_survay/survay_screen.dart';
 import 'package:fps/view/style/style.dart';
+import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
 class StoreItems extends StatefulWidget {
   StoreItems({super.key});
@@ -16,29 +22,18 @@ class StoreItems extends StatefulWidget {
 }
 
 class _StoreItemsState extends State<StoreItems> {
-  var positionItems = [
-    'POSITION',
-    'POSITION 1',
-    'POSITION 2',
-    'POSITION 3',
-    'POSITION 4',
-    'POSITION 5',
-    'POSITION 6'
-  ];
-  String positionValue = 'POSITION';
+  List<InspectorModel> inspectersList = [];
 
+  List<TextEditingController> nameControllersList = [];
+  final positionController = Get.put(PositionController());
+  final survayData = GetStorage();
   final numberController = TextEditingController();
-  final positions = TextEditingController();
-  final inspectorname = TextEditingController();
+  final fomkey = GlobalKey<FormState>();
   int? count;
-
-  bool isVisble = false;
-
-  List<InspectorModel> inspectersList=[];
-  List<TextEditingController>nameControllersList=[];
-
   @override
   Widget build(BuildContext context) {
+    String? survayId = GetLocalStorage.getfpsId('uId');
+
     return Scaffold(
       backgroundColor: mainred,
       body: SingleChildScrollView(
@@ -66,19 +61,35 @@ class _StoreItemsState extends State<StoreItems> {
               ),
             ),
             h15,
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 40.w),
-              child: BotosheetForm(
-                onChanged: (p0) {
-                  setState(() {
-                    count = int.parse(numberController.text);
-                    nameControllersList=List.generate(count!, (index) => TextEditingController());
-                    inspectersList=List.generate(count!, (index) => InspectorModel());
-                  });
-                },
-                controller: numberController,
-                textinputType: TextInputType.number,
-                validator: (value) {},
+            Form(
+              key: fomkey,
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 40.w),
+                child: BotosheetForm(
+                  onChanged: (p0) {
+                    setState(() {
+                      count = int.parse(numberController.text);
+                      nameControllersList = List.generate(
+                          count!, (index) => TextEditingController());
+                      inspectersList =
+                          List.generate(count!, (index) => InspectorModel());
+                    });
+                    print("$inspectersList ==23");
+                  },
+                  controller: numberController,
+                  textinputType: TextInputType.number,
+                  validator: (value) {
+                    if (value!.length == 0) {
+                      return "Zero is not a valid number";
+                    } else if (value!.length <= 2) {
+                      return "maximum length 2 degit";
+                    } else if (!RegExp(r'[0-9]').hasMatch(value)) {
+                      return '          Please enter a valid number';
+                    } else {
+                      return null;
+                    }
+                  },
+                ),
               ),
             ),
             h25,
@@ -93,7 +104,6 @@ class _StoreItemsState extends State<StoreItems> {
                       scrollDirection: Axis.horizontal,
                       itemCount: count!,
                       itemBuilder: (context, index) {
-                       
                         return SizedBox(
                           width: 360.w,
                           height: 220.h,
@@ -101,44 +111,144 @@ class _StoreItemsState extends State<StoreItems> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 h15,
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Wrap(
-                                      children: [
-                                        CustoName(name: 'Inspector Name'),
-                                        w170,
-                                        Text(
-                                          "${index + 1}/$count",
-                                          style: const TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              color: white),
-                                        )
-
-                                      ],
-                                    ),
-                                    h15,
-                                    InspectorNameForm(
-                                      
-                                      onChanged: (value) {
-                                      setState(() {
-                                        inspectersList[index].inspectorName=value;
-                                      });
-                                    },
-                                      controller: nameControllersList[index],
-                                      validator: (value) {},
-                                    ),
-                                  ],
+                                Form(
+                                  //   key: fomkey,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Wrap(
+                                        children: [
+                                          CustoName(
+                                            name: 'Inspector Name',
+                                            color: white,
+                                          ),
+                                          w170,
+                                          Text(
+                                            "${index + 1}/$count",
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color: white),
+                                          )
+                                        ],
+                                      ),
+                                      h15,
+                                      InspectorNameForm(
+                                        onChanged: (value) {
+                                          setState(() {
+                                            inspectersList[index].name = value;
+                                          });
+                                        },
+                                        controller: nameControllersList[index],
+                                        validator: (value) {
+                                          if (value!.length == 0) {
+                                            return "          Enter your name";
+                                          } else if (!RegExp(r'(^[a-z A-Z]+$)')
+                                              .hasMatch(value)) {
+                                            return '          Please enter a valid name';
+                                          } else {
+                                            return null;
+                                          }
+                                        },
+                                      ),
+                                    ],
+                                  ),
                                 ),
                                 h25,
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    CustoName(name: 'Position'),
+                                    CustoName(
+                                      name: 'Position',
+                                      color: white,
+                                    ),
                                     h15,
-                                    dropdown(index),
+                                    // dropdown(index),
+                                    SizedBox(
+                                        width: 300.w,
+                                        child: ClayContainer(
+                                          color: white,
+                                          borderRadius: 50.r,
+                                          depth: 0,
+                                          parentColor: white,
+                                          spread: 0,
+                                          curveType: CurveType.none,
+                                          width: double.infinity,
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 24),
+                                            child: DropdownButtonHideUnderline(
+                                              child: DropdownButton(
+                                                hint: Text('POSITION'),
+                                                elevation: 6,
+                                                borderRadius:
+                                                    BorderRadius.circular(20),
+                                                //  alignment:
+                                                // AlignmentDirectional.center,
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.w600,
+                                                    color: black),
+                                                value: inspectersList[index]
+                                                    .role_id,
+                                                icon: const Icon(
+                                                    Icons.keyboard_arrow_down),
+                                                items: positionController
+                                                    .positinList
+                                                    .map((e) {
+                                                  return DropdownMenuItem(
+                                                      value: e.id.toString(),
+                                                      child: Text(e.role!));
+                                                }).toList(),
+
+                                                onChanged: (String? newValue) {
+                                                  setState(() {
+                                                    inspectersList[index]
+                                                        .role_id = newValue!;
+                                                  });
+                                                },
+                                              ),
+                                            ),
+                                          ),
+                                        )),
                                   ],
                                 ),
+                                h20,
+                                Padding(
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 30.w),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
+                                        children: const [
+                                          Icon(
+                                            Icons.arrow_back_ios,
+                                            size: 15,
+                                            color: bg,
+                                          ),
+                                          Text(
+                                            "swipe",
+                                            style: TextStyle(color: white),
+                                          )
+                                        ],
+                                      ),
+                                      Row(
+                                        children: const [
+                                          Text(
+                                            "swipe",
+                                            style: TextStyle(color: white),
+                                          ),
+                                          Icon(
+                                            Icons.arrow_forward_ios,
+                                            size: 15,
+                                            color: bg,
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                )
                               ]),
                         );
                       },
@@ -157,13 +267,37 @@ class _StoreItemsState extends State<StoreItems> {
               child: CustomButton(
                 textColor: mainred,
                 onPressed: () {
+                  String? name;
+                  String? role;
                   for (var element in inspectersList) {
-                    print(element.position);
-                    print(element.inspectorName);
-                    
-                    
+                    name = element.name;
+                    role = element.role_id;
                   }
-                 
+                  //if (fomkey.currentState!.validate()) {
+                    if (inspectersList.isNotEmpty) {
+                      if (name != null && role != null) {
+                        
+                        print('data =======');
+                        print("${name}==name");
+                        print("${role}==role");
+                        survayData.write('inspectersList', inspectersList);
+                        positionController.switchValue.value = true;
+                        Get.back();
+                        //}
+
+                      } else {
+                        positionController.switchValue.value = false;Get.back();
+                        print("no data");
+                        Get.snackbar("Warning", "Please fill the all feilds",
+                            backgroundColor: yellow);
+                      }
+                    } else {
+                      positionController.switchValue.value = false;
+                      print("no data");
+                      Get.snackbar("Warning", "Please fill the all feilds",
+                          backgroundColor: yellow);
+                    }
+                 // }
                 },
                 title: "SUBMIT",
                 btncolor: white,
@@ -179,60 +313,38 @@ class _StoreItemsState extends State<StoreItems> {
   SizedBox dropdown(int index) {
     return SizedBox(
         width: 300.w,
-        child:
-        ClayContainer(
-    color: white,
-    borderRadius: 50.r,
-    depth: 0,
-    parentColor: white,
-    spread: 0,
-    curveType: CurveType.none,
-    width: double.infinity,
-    child: Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24),
-      child: DropdownButtonHideUnderline(
-        child: DropdownButton(
-          hint: Text('POSITION'),
-          elevation: 6,
-          borderRadius: BorderRadius.circular(20),
-          alignment: AlignmentDirectional.center,
-          style: TextStyle(fontWeight: FontWeight.w600, color: grey),
-         value: inspectersList[index].position,
-          icon: const Icon(Icons.keyboard_arrow_down),
-         items: positionItems.map((String items) {
-              return DropdownMenuItem(
-                value: items,
-                child: Text(items),
-              );
-            }).toList(),
-          onChanged: (String? newValue) {
-              setState(() {
-                inspectersList[index].position = newValue!;
-              });
-            },
-        ),
-      ),
-    ),
-  ));
-        
-        
-        
-        
-        //  CustomDropdown(
-        //     onpressed: (String? newValue) {
-        //       setState(() {
-        //         inspectersList[index].position = newValue!;
-        //       });
-        //     },
-        //     value: inspectersList[index].position,
-        //     items: positionItems.map((String items) {
-        //       return DropdownMenuItem(
-        //         value: items,
-        //         child: Text(items),
-        //       );
-        //     }).toList(),
-        //     depth: 0,
-        //     spread: 0));
+        child: ClayContainer(
+          color: white,
+          borderRadius: 50.r,
+          depth: 0,
+          parentColor: white,
+          spread: 0,
+          curveType: CurveType.none,
+          width: double.infinity,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: DropdownButtonHideUnderline(
+              child: DropdownButton(
+                hint: Text('POSITION'),
+                elevation: 6,
+                borderRadius: BorderRadius.circular(20),
+                alignment: AlignmentDirectional.center,
+                style: TextStyle(fontWeight: FontWeight.w600, color: grey),
+                value: positionController.positionValue,
+                icon: const Icon(Icons.keyboard_arrow_down),
+                items: positionController.positinList.map((e) {
+                  return DropdownMenuItem(
+                      value: e.id.toString(), child: Text(e.role!));
+                }).toList(),
+                onChanged: (String? newValue) {
+                  positionController.dropdownPositionChange(
+                      newValue!, 'POSITION');
+                  print("${newValue} =====position");
+                },
+              ),
+            ),
+          ),
+        ));
   }
 
   SizedBox dummy() {
@@ -242,7 +354,7 @@ class _StoreItemsState extends State<StoreItems> {
       height: 220.h,
       child: const Center(
         child: Text(
-          'Plese enter number of\naccompanied persons',
+          'Please enter number of\naccompanied persons',
           style: TextStyle(fontWeight: FontWeight.bold, color: white),
         ),
       ),
@@ -258,17 +370,16 @@ class _StoreItemsState extends State<StoreItems> {
 }
 
 class CustoName extends StatelessWidget {
-  CustoName({
-    Key? key,
-    required this.name,
-  }) : super(key: key);
+  CustoName({Key? key, required this.name, required this.color})
+      : super(key: key);
   String name;
+  Color color;
 
   @override
   Widget build(BuildContext context) {
     return Text(
       name,
-      style: TextStyle(fontWeight: FontWeight.bold, color: white),
+      style: TextStyle(fontWeight: FontWeight.bold, color: color),
     );
   }
 }

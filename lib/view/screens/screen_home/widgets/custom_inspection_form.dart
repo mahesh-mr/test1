@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fps/view/style/style.dart';
 
@@ -22,6 +23,7 @@ class InspectorNameForm extends StatelessWidget {
       child: TextFormField(
         onChanged:onChanged,
         keyboardType: TextInputType.name,
+      
         controller: controller,
         validator: validator,
         decoration: InputDecoration(

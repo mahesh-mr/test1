@@ -8,13 +8,15 @@ class CustomSurveyTextForm extends StatelessWidget {
   final FormFieldValidator validator;
   final String title;
   final TextInputType textinputType;
+  void Function(String)? onChanged;
+  final String suffix;
 
-  const CustomSurveyTextForm({
+   CustomSurveyTextForm({
     super.key,
     required this.controller,
     required this.textinputType,
     required this.title,
-    required this.validator,
+    required this.validator,required this.onChanged,required this.suffix
   });
 
   @override
@@ -36,11 +38,16 @@ class CustomSurveyTextForm extends StatelessWidget {
           parentColor: white,
           spread: 2,
           child: TextFormField(
+            onChanged:onChanged ,
             keyboardType: textinputType,
             controller: controller,
             validator: validator,
             textAlign: TextAlign.center,
             decoration: InputDecoration(
+              suffix: Padding(
+                padding:  EdgeInsets.only(right: 30.w),
+                child: Text(suffix),
+              ),
               contentPadding: EdgeInsets.all(5.w),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(40.r),
