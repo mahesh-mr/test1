@@ -7,24 +7,29 @@ import 'package:fps/controller/service/dioclint/token/token.dart';
 import 'package:fps/view/style/style.dart';
 import 'package:get/get.dart';
 
-class StockDetaisSercive {
+class OtherStockDetaisSercive {
   static Future<String?> stockItemService({
     required String survayId,
-    required String itemId,
+    required String productName,
     required String assignedQuandity,
     required String physicalStock,
     required String diffrence,
- required  String badsStock, BuildContext? context,
-  }) async { String? token = GetLocalStorage.getUserIdAndToken('token');
+    required String badsStock,
+   // BuildContext? context,
+  }) async {
+    String? token = GetLocalStorage.getUserIdAndToken('token');
     try {
-      var response = await DioClient.dio.post('/save_item_details', data: {
-        "survey_id": survayId,
-        "item_id": itemId,
-        "assigned_quantity": assignedQuandity,
-        "physical_stock": physicalStock,
-        "difference": diffrence,
-        "bad_stock":badsStock,
-      },options: Options(
+      var response = await DioClient.dio.post(
+        '/save_other_items',
+        data: {
+          "survey_id": survayId,
+          'product_name': productName,
+          "assigned_quantity": assignedQuandity,
+          "physical_stock": physicalStock,
+          "differnce": diffrence,
+          "bad_stock": badsStock,
+        },
+        options: Options(
           headers: {"Authorization": "Bearer $token"},
         ),
       );
@@ -34,8 +39,7 @@ class StockDetaisSercive {
       // print("Dio error");
       // print(e.response!.data);
       // print(e.response!.statusMessage);
-  TostClass.errorTost(
-          context!, 'error', e.response!.data['errorMessage']);
+     // TostClass.errorTost(context!, 'error', e.response!.data['errorMessage']);
       Get.snackbar(
         'Warning',
         e.response!.data['errorMessage'],

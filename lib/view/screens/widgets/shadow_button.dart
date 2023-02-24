@@ -13,34 +13,57 @@ Widget CustomShadowButton({
 }) {
   return InkWell(
     onTap: onTap,
-    child: Container(
-      height: height,
-      width: width,
-      decoration: BoxDecoration(
-          color: buttonColor,
-          borderRadius: BorderRadius.circular(50.r),
-          boxShadow: const [
-            BoxShadow(
-              color: grey,
-              offset: Offset(4, 4),
-              blurRadius: 2,
-              spreadRadius: 1,
-            ),
-            BoxShadow(
-              color: white,
-              offset: Offset(-4, -4),
-              blurRadius: 2,
-              spreadRadius: 1,
-            ),
-          ]),
-      child: Center(
-          child:title,
-      //      Text(
-      // titl,
-      //   style: TextStyle(color: textColor, fontWeight: FontWeight.bold),
-      //   textAlign: TextAlign.center,
+    child: Ink(
+      //color: mainred,
+          height: height,
+        width: width,
+      decoration:  BoxDecoration(
+      color: buttonColor,
+            borderRadius: BorderRadius.circular(50.r),
+            boxShadow: const [
+              BoxShadow(
+                color: grey,
+                offset: Offset(4, 4),
+                blurRadius: 2,
+                spreadRadius: 1,
+              ),
+              BoxShadow(
+                color: white,
+                offset: Offset(-4, -4),
+                blurRadius: 2,
+                spreadRadius: 1,
+              ),
+            ]),
+      child:Center(
+            child:title,
+        //      Text(
+        // titl,
+        //   style: TextStyle(color: textColor, fontWeight: FontWeight.bold),
+        //   textAlign: TextAlign.center,
+        // ),
+        ),
+      //  Container(
+      //   height: height,
+      //   width: width,
+      //   decoration: BoxDecoration(
+      //       color: buttonColor,
+      //       borderRadius: BorderRadius.circular(50.r),
+      //       boxShadow: const [
+      //         BoxShadow(
+      //           color: grey,
+      //           offset: Offset(4, 4),
+      //           blurRadius: 2,
+      //           spreadRadius: 1,
+      //         ),
+      //         BoxShadow(
+      //           color: white,
+      //           offset: Offset(-4, -4),
+      //           blurRadius: 2,
+      //           spreadRadius: 1,
+      //         ),
+      //       ]),
+      //   child: 
       // ),
-      ),
     ),
   );
 }

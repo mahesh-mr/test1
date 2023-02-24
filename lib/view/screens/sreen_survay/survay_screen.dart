@@ -1,22 +1,21 @@
 import 'package:clay_containers/clay_containers.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fps/controller/controller/confirm_owner_controller/confirm_owner_controller.dart';
 import 'package:fps/controller/controller/home_controller.dart/home_controller.dart';
-import 'package:fps/controller/controller/surva_controll/survay_controll.dart';
+
 import 'package:fps/controller/controller/survey_controller/position_controller.dart';
 import 'package:fps/controller/controller/tost/tost.dart';
 import 'package:fps/controller/service/accompaned_service/accompaned_service.dart';
 import 'package:fps/controller/service/dioclint/token/token.dart';
 import 'package:fps/controller/service/home_service/start_survay_survice/start_survay_service.dart';
 import 'package:fps/model/dropdown_model/dropdow.dart';
-
+import 'package:fps/model/home_models/home_local_storage/home_local_storage.dart';
 import 'package:fps/view/screens/conform_screen/conform_details.dart';
-import 'package:fps/view/screens/custon_routing_trasactions/custom_routhing_transations.dart';
-import 'package:fps/view/screens/qution_air/page_view.dart';
 import 'package:fps/view/screens/screen_home/stock_items.dart';
-import 'package:fps/view/screens/sreen_survay/widgets/survey_back_button.dart';
 import 'package:fps/view/screens/sreen_survay/widgets/survey_form_wiidget.dart';
 import 'package:fps/view/screens/widgets/custom_dropdown.dart';
+import 'package:fps/view/screens/widgets/double_tapp.dart';
 import 'package:fps/view/screens/widgets/popup_menu/popup_menu.dart';
 import 'package:fps/view/screens/widgets/shadow_button.dart';
 import 'package:fps/view/style/style.dart';
@@ -24,26 +23,24 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
-import 'package:path/path.dart';
 
-class SurveyScreen extends StatefulWidget {
-  SurveyScreen({super.key});
+class SurveyScreen extends StatelessWidget {
+  SurveyScreen(
+      {super.key, 
+    //  this.isEditing = false, this.index, this.homeHiveStogage
+      });
+  // bool isEditing;
+  // int? index;
+  // HomeLocalStorage? homeHiveStogage;
 
   @override
-  State<SurveyScreen> createState() => _SurveyScreenState();
-}
-
-class _SurveyScreenState extends State<SurveyScreen> {
   final fpsnumberController = TextEditingController();
-
   final nameController = TextEditingController();
-
   final formKey = GlobalKey<FormState>();
-
   final positionController = Get.put(PositionController());
-
   final confirmOwner = Get.put(ConfirmController());
-
+  // HomeHiveModelController hiveModelController =
+  //     Get.put(HomeHiveModelController());
   List<InspectorModel> inspectersList = [];
 
 //
@@ -56,10 +53,16 @@ class _SurveyScreenState extends State<SurveyScreen> {
   //String? survayId = GetfpsStorage.getfpsId('id');
   String? fpsNumber;
 
-  int? numsed;
-  bool isLoding = false;
+  // int? numsed;
+
+  DateTime? lastpressed;
   @override
   Widget build(BuildContext context) {
+    String dates = DateFormat("yyyy-MM-dd hh:mm:ss")
+        .format(homecontroller.selectedDate.value)
+        .toString();
+    String lastInDate =
+        DateFormat("yyyy-MM-dd hh:mm:ss").format(DateTime.now());
     return Scaffold(
         backgroundColor: bg,
         appBar: AppBar(
@@ -83,266 +86,142 @@ class _SurveyScreenState extends State<SurveyScreen> {
             Popups(color: mainred),
           ],
         ),
-        body: GetBuilder<PositionController>(
-            dispose: (_) {
-              positionController.positionValue = null;
-              // homecontroller.fpsValue = null;
-            },
-            initState: (state) {},
-            builder: (controller) {
-              return SingleChildScrollView(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 40.h),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      h20,
-                      Text(
-                        'Survey',
-                        style: welcomeText,
-                      ),
-                      h20,
-                      Form(
-                        key: formKey,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                "FPS Number",
-                                textAlign: TextAlign.start,
-                                style: TextStyle(
-                                  color: grey3,
-                                ),
-                              ),
-                            ),
-                            h15,
-                            CustomDropdown(
-                                onpressed: (String? newValue) {
-                                  print(
-                                      "${positionController.fpsValue}====fps val 1");
-                                  //  print("$userId====id orginal");
-                                  //    homecontroller.talukvalues = null;
-                                  positionController.dropdownPositionChange(
-                                      newValue!, 'FPS Number');
-
-                                  print("${newValue} =====fps===val");
-                                  positionController.tempfpsNumberList
-                                      .map((e) => print(e.firka));
-
-                                  // homecontroller.tempTalukList = homecontroller.talukList
-                                  //     .where((element) =>
-                                  //         element.districtId.toString() ==
-                                  //         homecontroller.districtValue.toString())
-                                  //     .toList();
-                                },
-                                value: positionController.fpsValue,
-                                items: positionController.tempfpsNumberList
-                                    .map((e) {
-                                  return DropdownMenuItem(
-                                    value: e.fpsNo.toString(),
-                                    child: Text(e.fpsNo.toString()),
-                                  );
-                                }).toList(),
-                                hint: 'FPS Number'),
-                            h15,
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text(
-                                  'Date of Last Inspection',
+        body: DoubleTapBackPress(
+          lastpressed: lastpressed,
+          widget: GetBuilder<PositionController>(
+              init: PositionController(),
+              dispose: (_) {
+                positionController.positionValue = null;
+                // homecontroller.fpsValue = null;
+              },
+              initState: (state) {
+                // if (isEditing) {
+                //   homecontroller.districtValue = homeHiveStogage!.district;
+                //   homecontroller.talukvalues = homeHiveStogage!.taluk;
+                //   homecontroller.firkaValue = homeHiveStogage!.firka;
+                //   dates = homeHiveStogage!.lastInDate!;
+                //   lastInDate = homeHiveStogage!.lastInDate!;
+                //   nameController.text = homeHiveStogage!.prInspector!;
+                //   positionController.positionValue =
+                //       homeHiveStogage!.prPosiction!;
+                // }
+              },
+              builder: (controller) {
+                return SingleChildScrollView(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 40.h),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        h20,
+                        Text(
+                          'Inspection',
+                          style: welcomeText,
+                        ),
+                        h20,
+                        Form(
+                          key: formKey,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  "FPS Number",
+                                  textAlign: TextAlign.start,
                                   style: TextStyle(
                                     color: grey3,
                                   ),
                                 ),
-                                h10,
-                                Obx(() {
-                                  String formateDate = DateFormat("dd-MM-yyyy")
-                                      .format(positionController
-                                          .lastInspectonDates.value)
-                                      .toString();
-
-                                  return GestureDetector(
-                                    onTap: () {
-                                      positionController
-                                          .choseLastInspectionDate();
-                                    },
-                                    child: ClayContainer(
-                                      color: white,
-                                      borderRadius: 50.r,
-                                      depth: 40,
-                                      parentColor: white,
-                                      spread: 2,
-                                      child: Container(
-                                        height: 45.w,
-                                        width: double.infinity,
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(40.r),
-                                            color: white,
-                                            border:
-                                                Border.all(color: lightgrey)),
-                                        child: Padding(
-                                          padding: EdgeInsets.only(top: 15.h),
-                                          child: Text(
-                                            formateDate,
-                                            textAlign: TextAlign.center,
-                                            style: const TextStyle(
-                                                fontWeight: FontWeight.w600,
-                                                color: lightblack),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  );
-                                }),
-                              ],
-                            ),
-                            h15,
-                            CustomSurveyTextForm(
-                              suffix: "",
-                              onChanged: (p0) {},
-                              controller: nameController,
-                              textinputType: TextInputType.text,
-                              title: "Name of Previous Inspector",
-                              validator: (value) {
-                                if (value!.length == 0) {
-                                  return "          Enter your name";
-                                } else if (!RegExp(r'(^[a-z A-Z]+$)')
-                                    .hasMatch(value)) {
-                                  return '          Please enter a valid name';
-                                } else {
-                                  return null;
-                                }
-                              },
-                            ),
-                            h15,
-                            const Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                "Position of Previous Inspector",
-                                textAlign: TextAlign.start,
-                                style: TextStyle(
-                                  color: grey3,
+                              ),
+                              h15,
+                              fpsNuberDropdown(),
+                              h15,
+                              lastInspetionDate(),
+                              h15,
+                              CustomSurveyTextForm(
+                                suffix: "",
+                                onChanged: (p0) {},
+                                controller: nameController,
+                                textinputType: TextInputType.text,
+                                title: "Name of Previous Inspector",
+                                validator: (value) {
+                                  if (value!.length == 0) {
+                                    return "          Enter your name";
+                                  } else if (!RegExp(r'(^[a-z A-Z]+$)')
+                                      .hasMatch(value)) {
+                                    return '          Please enter a valid name';
+                                  } else {
+                                    return null;
+                                  }
+                                },
+                              ),
+                              h15,
+                              const Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  "Position of Previous Inspector",
+                                  textAlign: TextAlign.start,
+                                  style: TextStyle(
+                                    color: grey3,
+                                  ),
                                 ),
                               ),
-                            ),
-                            h15,
-                            positionController.positinList.isEmpty
-                                ? Container(
-                                    height: 40,
-                                    width: double.infinity,
-                                    decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(50.r)),
-                                            child: Center(child: Text("data is empty"),),
-                                  )
-                                : CustomDropdown(
-                                    onpressed: (String? newValue) {
-                                      positionController.dropdownPositionChange(
-                                          newValue!, 'POSITION');
-                                      print("${newValue} =====position");
-                                    },
-                                    value: positionController.positionValue,
-                                    items:
-                                        positionController.positinList.map((e) {
-                                      return DropdownMenuItem(
-                                          value: e.id.toString(),
-                                          child: Text(e.role!));
-                                    }).toList(),
-                                    hint: 'POSITION'),
-                            h15,
-                          ],
-                        ),
-                      ),
-                      h25,
-                      Row(
-                        children: [
-                          Obx(() {
-                            return Switch(
-                              activeColor: mainred,
-                              value: positionController.switchValue.value,
-                              onChanged: (value) {
-                                String? name;
-                                String? role;
-                                for (var element in inspectersList) {
-                                  name = element.name;
-                                  role = element.role_id;
-                                }
-
-                                if (name != null && role != null) {
-                                  positionController.switchValue.value = true;
-                                }
-                                positionController.switchValue.value = false;
-                                Get.to(StoreItems());
-                              },
-                            );
-                          }),
-                          const Text(
-                            'Is it an accompanied inspection?',
-                            style: TextStyle(color: grey),
+                              h15,
+                              positionDropdown(),
+                              h15,
+                            ],
                           ),
-                        ],
-                      ),
-                      h35,
-                      CustomShadowButton(
-                          onTap: isLoding
-                              ? null
-                              : () async {
-                                  print("${numsed}=====    num");
-                                  var dateFormat = DateFormat(
-                                          "yyyy-MM-dd hh:mm:ss")
-                                      .format(
-                                          controller.lastInspectonDates.value)
-                                      .toString();
-                                  String dates = DateFormat(
-                                          "yyyy-MM-dd hh:mm:ss")
-                                      .format(homecontroller.selectedDate.value)
-                                      .toString();
+                        ),
+                        h25,
+                        accompaneedSwich(),
+                        h35,
+                        Obx(() {
+                          return CustomShadowButton(
+                            onTap: homecontroller.isLoding.value
+                                ? null
+                                : () async {
+                                    //     print("${numsed}=====    num");
+                                    // var dateFormat = DateFormat(
+                                    //         "yyyy-MM-dd hh:mm:ss")
+                                    //     .format(
+                                    //         controller.lastInspectonDates.value)
+                                    //     .toString();
+                                    // String datesd = DateFormat(
+                                    //         "yyyy-MM-dd hh:mm:ss")
+                                    //     .format(
+                                    //         homecontroller.selectedDate.value)
+                                    //     .toString();
 
-                                  bool isValid =
-                                      formKey.currentState!.validate();
+                                    // bool isValid =
+                                    //     formKey.currentState!.validate();
 
-                                  if (isValid) {
-                                    if (controller.positionValue != null &&
-                                        controller.fpsValue != null) {
-                                      setState(() {
-                                        isLoding = true;
-                                      });
+                                    // if (nameController.text.isNotEmpty) {
+                                    //   if (isValid) {
+
+                                    if (controller.fpsValue != null) {
+                                      homecontroller.isLoding.value = true;
                                       await Future.delayed(
-                                          Duration(seconds: 1));
-
-                                      setState(() {
-                                        isLoding = false;
-                                      });
-
-                                      String cdate =
-                                          DateFormat("yyyy-MM-dd hh:mm:ss")
-                                              .format(DateTime.now());
-
-                                      String dates = DateFormat(
-                                              "yyyy-MM-dd hh:mm:ss")
-                                          .format(
-                                              homecontroller.selectedDate.value)
-                                          .toString();
+                                          const Duration(seconds: 1));
+                                      homecontroller.isLoding.value = false;
 
                                       StartSurvay.startSuvey(
                                               district: homecontroller
                                                   .districtValue
                                                   .toString(),
-                                              taluk: homecontroller.talukvalues
+                                              taluk: homecontroller
+                                                  .talukvalues
                                                   .toString(),
-                                              firka: homecontroller.firkaValue
+                                              firka: homecontroller
+                                                  .firkaValue
                                                   .toString(),
                                               inspection_date: dates,
                                               user_id: userId!,
                                               fps_no: positionController
                                                   .fpsValue
                                                   .toString(),
-                                              previous_inspector_name:
-                                                  nameController.text,
-                                              last_inspection_date: cdate,
+                                              previous_inspector_name:  nameController.text.isEmpty?"":  nameController.text,
+                                              last_inspection_date: lastInDate,
                                               previous_inspector_position:
                                                   positionController
                                                       .positionValue
@@ -350,40 +229,44 @@ class _SurveyScreenState extends State<SurveyScreen> {
                                               context: context)
                                           .then((value) {
                                         if (value == "success") {
-                                          confirmOwner.getConfirmService().then(
-                                              (value) => confirmOwner
+                                          confirmOwner
+                                              .getConfirmService()
+                                              .then((value) => confirmOwner
                                                   .confirmModel = value!);
                                           print(
                                               "${survayData.read('pName')}==name");
                                           print("${userId}==uid");
                                           print("${dates}==tal");
-                                          print("${dateFormat}==tal");
+                                       //   print("${dateFormat}==tal");
                                           print(survayData.read('pName'));
                                           String? name;
                                           String? role;
                                           String? survayId =
-                                              GetLocalStorage.getfpsId('sId');
+                                              GetLocalStorage.getfpsId(
+                                                  'sId');
                                           String? fpsNo =
                                               GetLocalStorage.getfpsId(
                                                   'fps_no');
                                           print("${fpsNo}==fpsNo");
                                           List list = [];
                                           List<dynamic>? inspecters =
-                                              survayData.read('inspectersList');
-                                          //     var data = inspecters == null ? list : inspecters;
+                                              survayData
+                                                  .read('inspectersList');
                                           var data = inspecters ?? list;
                                           for (var element in data) {
                                             name = element.name;
                                             role = element.role_id;
                                           }
-
-                                          if (name != null && role != null) {
+                                          if (name != null &&
+                                              role != null) {
                                             List<Map<String, dynamic>>
                                                 acompampanaidList = data
                                                     .map((e) => {
                                                           "name": e.name,
-                                                          "role_id": e.role_id,
-                                                          "survey_id": survayId
+                                                          "role_id":
+                                                              e.role_id,
+                                                          "survey_id":
+                                                              survayId
                                                         })
                                                     .toList();
                                             print(inspecters);
@@ -396,10 +279,15 @@ class _SurveyScreenState extends State<SurveyScreen> {
                                                 .then(
                                               (value) {
                                                 if (value == 'success') {
-                                                  Get.to(ConformDetails());
+                                                  Get.to(ConformDetails(),
+                                                      transition: Transition
+                                                          .noTransition,
+                                                      duration:
+                                                          const Duration(
+                                                              seconds: 1));
 
-                                                  survayData
-                                                      .remove('inspectersList');
+                                                  survayData.remove(
+                                                      'inspectersList');
                                                 } else {
                                                   TostClass.warningTost(
                                                       context);
@@ -408,15 +296,59 @@ class _SurveyScreenState extends State<SurveyScreen> {
                                             );
                                           } else {
                                             print("no accompaned ====");
-                                            Get.to(ConformDetails());
-                                            survayData.remove('inspectersList');
+                                            Get.to(ConformDetails(),
+                                                transition:
+                                                    Transition.noTransition,
+                                                duration: const Duration(
+                                                    seconds: 1));
+                                            survayData
+                                                .remove('inspectersList');
 
                                             survayData.remove('pName');
                                           }
                                         }
                                       });
 
-                                      //
+                                      // HomeLocalStorage homeLocalStorage =
+                                      //     HomeLocalStorage(
+                                      //   district: homecontroller.districtValue
+                                      //       .toString(),
+                                      //   taluk: homecontroller.talukvalues
+                                      //       .toString(),
+                                      //   firka: homecontroller.firkaValue
+                                      //       .toString(),
+                                      //   fpsNo: positionController.fpsValue
+                                      //       .toString(),
+                                      //   lastInDate: lastInDate,
+                                      //   inspectionDate: dates,
+                                      //   prInspector: nameController.text.isEmpty
+                                      //       ? ""
+                                      //       : nameController.text,
+                                      //   prPosiction: positionController
+                                      //       .positionValue
+                                      //       .toString(),
+                                      // );
+
+                                      // if (isEditing) {
+                                      //   positionController.updateInspection(
+                                      //       0, homeLocalStorage);
+                                      //   print('update');
+                                      //   Get.to((ViewInspection()),
+                                      //       transition: Transition.noTransition,
+                                      //       duration:
+                                      //           const Duration(seconds: 1));
+                                      // } else {
+                                      //   positionController
+                                      //       .addSurveyItems(homeLocalStorage);
+                                      //   print('new added');
+                                      //   Get.to((ViewInspection()),
+                                      //       transition: Transition.noTransition,
+                                      //       duration:
+                                      //           const Duration(seconds: 1));
+                                      // }
+
+                                      // positionController.getHomeHiveStorage();
+                                      // //
                                     } else {
                                       if (positionController.fpsValue == null) {
                                         Get.snackbar("Warnings",
@@ -428,22 +360,207 @@ class _SurveyScreenState extends State<SurveyScreen> {
                                             backgroundColor: yellow);
                                       }
                                     }
-                                  }
-                                },
-                          // },
-                          buttonColor: mainred,
-                          height: 40.h,
-                          width: double.infinity,
-                          title: isLoding
-                              ? CircularProgressIndicator(
-                                  color: yellow,
-                                )
-                              : butenText(title: 'SUBMIT', textColor: bg)),
-                      h50,
-                    ],
+                                    //   }
+                                    // }
+                                  },
+                            buttonColor: mainred,
+                            height: 40.h,
+                            width: double.infinity,
+                            title: homecontroller.isLoding.value
+                                ? const CupertinoActivityIndicator(
+                                    animating: true,
+                                    color: yellow,
+                                    radius: 25,
+                                  )
+                                : butenText(
+                                    title:  'Submit',
+                                    textColor: bg),
+                          );
+                        }),
+                        h50,
+                      ],
+                    ),
+                  ),
+                );
+              }),
+        ));
+  }
+
+  CustomDropdown positionDropdown() {
+    return CustomDropdown(
+        onpressed: (String? newValue) {
+          positionController.dropdownPositionChange(newValue!, 'POSITION');
+          print("${newValue} =====position");
+        },
+        value: positionController.positionValue,
+        items: positionController.positinList.map((e) {
+          return DropdownMenuItem(value: e.id.toString(), child: Text(e.role!));
+        }).toList(),
+        hint: 'POSITION');
+  }
+
+  Row accompaneedSwich() {
+    return Row(
+      children: [
+        Obx(() {
+          return Switch(
+            activeColor: mainred,
+            value: positionController.switchValue.value,
+            onChanged: (value) {
+              String? name;
+              String? role;
+              for (var element in inspectersList) {
+                name = element.name;
+                role = element.role_id;
+              }
+
+              if (name != null && role != null) {
+                positionController.switchValue.value = true;
+              }
+              positionController.switchValue.value = false;
+
+              Get.to(const StoreItems(),
+                  transition: Transition.downToUp,
+                  duration: const Duration(seconds: 1));
+              // }
+            },
+          );
+        }),
+        const Text(
+          'Is it an accompanied inspection?',
+          style: TextStyle(color: grey),
+        ),
+      ],
+    );
+  }
+
+  PositionController get priviosPositionDropdown => positionController;
+
+  CustomDropdown fpsNuberDropdown() {
+    return CustomDropdown(
+        onpressed: (String? newValue) {
+          print("${positionController.fpsValue}====fps val 1");
+
+          positionController.dropdownPositionChange(newValue!, 'FPS Number');
+
+          print("${newValue} =====fps===val");
+          positionController.tempfpsNumberList.map((e) => print(e.firka));
+        },
+        value: positionController.fpsValue,
+        items: positionController.tempfpsNumberList.map((e) {
+          return DropdownMenuItem(
+            value: e.fpsNo.toString(),
+            child: Text(e.fpsNo.toString()),
+          );
+        }).toList(),
+        hint: 'FPS Number');
+  }
+
+  Column lastInspetionDate() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          'Date of Last Inspection',
+          style: TextStyle(
+            color: grey3,
+          ),
+        ),
+        h10,
+        Obx(() {
+          String formateDate = DateFormat("dd-MM-yyyy")
+              .format(positionController.lastInspectonDates.value)
+              .toString();
+
+          return GestureDetector(
+            onTap: () {
+              positionController.choseLastInspectionDate();
+            },
+            child: ClayContainer(
+              color: white,
+              borderRadius: 50.r,
+              depth: 40,
+              parentColor: white,
+              spread: 2,
+              child: Container(
+                height: 45.w,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(40.r),
+                    color: white,
+                    border: Border.all(color: lightgrey)),
+                child: Padding(
+                  padding: EdgeInsets.only(top: 15.h),
+                  child: Text(
+                    formateDate,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.w600, color: lightblack),
                   ),
                 ),
-              );
-            }));
+              ),
+            ),
+          );
+        }),
+      ],
+    );
+  }
+}
+
+class ViewInspection extends StatelessWidget {
+  ViewInspection({super.key});
+
+  PositionController hiveModelController =
+      Get.put(PositionController ());
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+          title: Text('data inspection'),
+        ),
+        body: Obx(() {
+          if (hiveModelController.homeHiveModel.isEmpty) {
+            return Center(
+              child: Text('data'),
+            );
+          }
+
+          HomeLocalStorage homeModel = hiveModelController.homeHiveModel[0];
+          return Container(
+            height: 500,
+            width: double.infinity,
+            color: bg,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text("dis :   ${homeModel.district!}"),
+                h30,
+                Text("fir : ${homeModel.firka!}"),
+                h30,
+                Text("tal : ${homeModel.taluk!}"),
+                h30,
+                Text("current date : ${homeModel.inspectionDate!}"),
+                h30,
+                Text("fps no : ${homeModel.fpsNo!}"),
+                h30,
+                Text("last date : ${homeModel.lastInDate!}"),
+                h30,
+                Text("prev ins : ${homeModel.prInspector!}"),
+                h30,
+                Text("pos : ${homeModel.prPosiction!}"),
+                h50,
+                ElevatedButton(
+                    onPressed: () {
+                      print("${homeModel.fpsNo}===fpsno");
+
+                      Get.to(ConformDetails());
+                    },
+                    child: Text('submit'))
+              ],
+            ),
+          );
+        }));
   }
 }

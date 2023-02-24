@@ -9,7 +9,7 @@ import 'package:get/get.dart';
 
 class AuthService extends GetxController {
   var isvisible = true.obs;
-   var isLoading = true.obs;
+   var isLoading = false.obs;
 
    Future<String?> loginUser({
     required String email,
@@ -18,7 +18,7 @@ class AuthService extends GetxController {
   }) async {
 //showLoading();
     try {
-      isLoading.value=true;
+   //   isLoading.value=true;
 
       var response = await DioClientLogin.dio.post("/login", data: {
         "email": email,
@@ -45,6 +45,24 @@ class AuthService extends GetxController {
       print(e.response!.statusMessage);
       TostClass.errorTost(
           context!, 'error', e.response!.data['errorMessage']);
+           Get.snackbar(
+          'Warning',
+         e.message,
+          backgroundColor: white,
+        );
+         TostClass.errorTost(
+          context, 'error', e.response!.
+          
+          
+          
+          
+          data);
+           Get.snackbar(
+          'Warning',
+         e.message,
+          backgroundColor: white,
+        );
+          
      
 
       if (e.type == DioErrorType.other) {
@@ -68,16 +86,16 @@ class AuthService extends GetxController {
     }
     return null;
   }
-    showLoading() {
-    isLoading.value = true;
-    Future.delayed(const Duration(seconds: 10), () {
-      if (isLoading.value == true) {
-        isLoading.value = false;
-      }
-    });
-  }
+  //   showLoading() {
+  //   isLoading.value = true;
+  //   Future.delayed(const Duration(seconds: 10), () {
+  //     if (isLoading.value == true) {
+  //       isLoading.value = false;
+  //     }
+  //   });
+  // }
 
-  hideLoading() {
-    isLoading.value = false;
-  }
+  // hideLoading() {
+  //   isLoading.value = false;
+  // }
 }

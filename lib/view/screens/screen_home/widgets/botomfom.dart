@@ -9,6 +9,7 @@ class BotosheetForm extends StatelessWidget {
 
   final TextInputType textinputType;
   final void Function(String)? onChanged;
+ final int maxLength;
 
 
 
@@ -16,19 +17,20 @@ class BotosheetForm extends StatelessWidget {
     super.key,
     required this.controller,
     required this.textinputType,
-    required this.validator,required this.onChanged,
+    required this.validator,required this.onChanged,required this. maxLength
   });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      maxLength:maxLength ,
       onChanged:onChanged ,
      keyboardType:textinputType ,
       controller: controller,
       validator: validator,
         inputFormatters: [FilteringTextInputFormatter.digitsOnly],
 
-      decoration: InputDecoration(
+      decoration: InputDecoration(errorStyle: TextStyle(color: yellow),
         counterStyle: TextStyle(color:bg),
           contentPadding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 5.h),
           enabledBorder: OutlineInputBorder(
@@ -40,7 +42,7 @@ class BotosheetForm extends StatelessWidget {
           ),
           errorBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(40.r),
-            borderSide: const BorderSide(color: red),
+            borderSide: const BorderSide(color: green),
           ),
           fillColor: bg,
           focusColor: bg,

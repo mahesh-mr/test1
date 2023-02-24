@@ -1,109 +1,129 @@
 import 'package:clay_containers/clay_containers.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:fps/controller/service/auth_service/auth_service.dart';
 import 'package:fps/view/screens/navebar_screen/navbar.dart';
-import 'package:fps/view/screens/screen_forgot/forgot_screen.dart';
 import 'package:fps/view/screens/screen%20_login/widgets/custom_textform.dart';
+import 'package:fps/view/screens/widgets/double_tapp.dart';
 import 'package:fps/view/screens/widgets/shadow_button.dart';
 import 'package:fps/view/style/style.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+// ignore: must_be_immutable
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _fomkey = GlobalKey<FormState>();
   final authController = Get.put(AuthService());
-  //commenController = Get.put(commenController());
+
+  DateTime? lastpressed;
 
   @override
   Widget build(BuildContext context) {
-    // _emailController.text = "admin2@gmail.com";
-    // _passwordController.text = "123456";
-
     return Scaffold(
       backgroundColor: bg,
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 40.w, vertical: 100.h),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                height: 180.h,
-                width: 200.w,
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage('assets/3.png'),
+      body: DoubleTapBackPress(
+        lastpressed: lastpressed,
+        widget: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 40.w, vertical: 100.h),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  height: 180.h,
+                  width: 200.w,
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage('assets/3.png'),
+                    ),
                   ),
                 ),
-              ),
-              h20,
-              Text(
-                "Welcome",
-                style: welcomeText,
-              ),
-              h20,
-              const Text(
-                "Hello there, Login to Continue",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: grey,
+                h20,
+                Text(
+                  "Welcome",
+                  style: welcomeText,
                 ),
-              ),
-              h20,
-              Form(
-                key: _fomkey,
-                child: Column(
-                  children: [
-                    emailFeild(emailController: _emailController),
-                    h20,
-                    password(),
-                    h30,
-                    // GestureDetector(
-                    //   onTap: () {
-                    //     Get.to(ForgotScreen());
-                    //   },
-                    //   child: const Text(
-                    //     'Forgot Password',
-                    //     style: TextStyle(
-                    //         color: mainred, fontWeight: FontWeight.bold),
-                    //   ),
-                    // ),
-                    h30,
-                    Obx(() {
-                      if (authController.isLoading.value) {
-                        Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      }
-                      return CustomShadowButton(
-                          onTap: () {
-                            bool isValid = _fomkey.currentState!.validate();
-                            if (isValid) {
-                              authController
-                                  .loginUser(
-                                      email: _emailController.text,
-                                      password: _passwordController.text,
-                                      context: context)
-                                  .then((value) {
-                                if (value == "success") {
-                                  Get.offAll(NavBarScreen());
-                                }
-                              });
-                            }
-                          },
-                          buttonColor: mainred,
-                          height: 40.h,
-                          width: double.infinity,
-                          title: butenText(
-                              title: 'Login to Access', textColor: bg));
-                    }),
-                  ],
+                h20,
+                const Text(
+                  "Hello there, Login to Continue",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: grey,
+                  ),
                 ),
-              ),
-            ],
+                h20,
+                Form(
+                  key: _fomkey,
+                  child: Column(
+                    children: [
+                      emailFeild(emailController: _emailController),
+                      h20,
+                      password(),
+                      h30,
+                      // GestureDetector(
+                      //   onTap: () {
+                      //     Get.to(ForgotScreen());
+                      //   },
+                      //   child: const Text(
+                      //     'Forgot Password',
+                      //     style: TextStyle(
+                      //         color: mainred, fontWeight: FontWeight.bold),
+                      //   ),
+                      // ),
+                      h30,
+                      Obx(() {
+                        if (authController.isLoading.value) {
+                          const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+                        return CustomShadowButton(
+                            onTap: authController.isLoading.value
+                                ? null
+                                : () async {
+                                    authController.isLoading.value = true;
+                                    await Future.delayed(const Duration(seconds: 1));
+                                    authController.isLoading.value = false;
+                                    bool isValid =
+                                        _fomkey.currentState!.validate();
+                                    if (isValid) {
+                                      authController
+                                          .loginUser(
+                                              email: _emailController.text,
+                                              password:
+                                                  _passwordController.text,
+                                              context: context)
+                                          .then((value) {
+                                        if (value == "success") {
+                                          Get.offAll(NavBarScreen(),
+                                              transition:
+                                                  Transition.noTransition,
+                                              duration:
+                                                  const Duration(seconds: 1));
+                                        }
+                                      });
+                                    }
+                                  },
+                            buttonColor: mainred,
+                            height: 40.h,
+                            width: double.infinity,
+                            title: authController.isLoading.value
+                                ? const CupertinoActivityIndicator(
+                                    animating: true,
+                                    color: yellow,
+                                    radius: 25,
+                                  )
+                                : butenText(
+                                    title: 'Login to Access', textColor: bg));
+                      }),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

@@ -227,7 +227,7 @@ class GetListController extends GetxController{
       loding.value = false;
       return data!;
     } catch (e) {
-      Get.snackbar('oopz', ' $e');
+       Get.snackbar('warnig', 'Please check Internet Connection');
       print(e);
       print('catch bloc called');
       loding.value = false;

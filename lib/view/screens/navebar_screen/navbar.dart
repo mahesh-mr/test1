@@ -22,7 +22,7 @@ class _NavBarScreenState extends State<NavBarScreen> {
   final List _pages = [
      HomeScreen(),
      ProfileScreen(),
-    const SupportScreen(),
+     SupportScreen(),
   ];
 
   @override

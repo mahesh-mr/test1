@@ -15,7 +15,7 @@ class HomeController extends GetxController {
 AllFpsNumberModel fpsNumber = AllFpsNumberModel();
 
   var selectedDate = DateTime.now().obs;
-  var switchValue = false.obs;
+  var switchValue = false.obs;  var  isLoding=false.obs;
 
   List<AllDistrict> districtList = [];
   List<FirkaList> firkaList = [];
@@ -45,7 +45,7 @@ AllFpsNumberModel fpsNumber = AllFpsNumberModel();
       var data = await DistrictDataService.districService();
       return data;
     } catch (e) {
-      Get.snackbar('oopz', ' $e');
+       Get.snackbar('warnig', 'Please check Internet Connection');
       log("error: $e");
       log('catch bloc called');
     }
@@ -74,7 +74,7 @@ AllFpsNumberModel fpsNumber = AllFpsNumberModel();
       log("$data=============");
       return data;
     } catch (e) {
-      Get.snackbar('oopz', ' $e');
+     Get.snackbar('warnig', 'Please check Internet Connection');
       log("error: $e");
       log('catch bloc called');
     }
@@ -89,7 +89,7 @@ AllFpsNumberModel fpsNumber = AllFpsNumberModel();
       log("$data=============");
       return data;
     } catch (e) {
-      Get.snackbar('oopz', ' $e');
+       Get.snackbar('warnig', 'Please check Internet Connection');
       log("error: $e");
       log('catch bloc called');
     }

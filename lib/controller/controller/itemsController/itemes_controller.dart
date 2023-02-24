@@ -8,7 +8,12 @@ class ItemController extends GetxController {
   var selectedIndex = 0.obs;
   bool get isLastPage => selectedIndex.value == getItemModel.length - 1;
   var pagecontroller = PageController();
-
+  final countValue = 0.obs;
+  var  isLoding=false.obs;
+  increment() => countValue.value++;
+  final assignedquantityController = TextEditingController();
+  final physicalstockController = TextEditingController();
+  final badstockController = TextEditingController();
   forwerdPageJumb() {
     pagecontroller.nextPage(
       duration: 550.milliseconds,
@@ -40,7 +45,7 @@ class ItemController extends GetxController {
       loding.value = false;
       return data!;
     } catch (e) {
-      Get.snackbar('oopz', ' $e');
+      Get.snackbar('warnig', 'Please check Internet Connection');
       print(e);
       print('catch bloc called');
       loding.value = false;

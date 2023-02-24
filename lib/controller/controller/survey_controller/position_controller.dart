@@ -7,8 +7,10 @@ import 'package:fps/controller/service/home_service/district_service/district_da
 import 'package:fps/controller/service/survay_screen_service/position_service.dart';
 import 'package:fps/model/all_fps_number_model/all_fps_number_model.dart';
 import 'package:fps/model/all_fps_numbers_model/all_fps_model_number.dart';
+import 'package:fps/model/home_models/home_local_storage/home_local_storage.dart';
 import 'package:fps/model/survey_model/position_model.dart';
 import 'package:get/get.dart';
+import 'package:hive_flutter/adapters.dart';
 
 class PositionController extends GetxController {
   PositionModel positionModel = PositionModel();
@@ -23,6 +25,7 @@ class PositionController extends GetxController {
   String? positionValue;
   String? fpsValue;
   var switchValue = false.obs;
+  var isLoding = false.obs;
 
   changeTogle(bool toggleValue) {
     switchValue.value = toggleValue;
@@ -30,14 +33,12 @@ class PositionController extends GetxController {
   }
 
   fpsNumberController() async {
- 
     try {
       var data = await PositionService.allFpsNumber();
-     
 
       return data;
     } catch (e) {
-      Get.snackbar('oopz', ' $e');
+      Get.snackbar('warnig', 'Please check Internet Connection');
       log("error: $e");
       log('catch bloc called');
     }
@@ -50,7 +51,7 @@ class PositionController extends GetxController {
       var data = await PositionService.positionService();
       return data;
     } catch (e) {
-      Get.snackbar('oopz', ' $e');
+      Get.snackbar('warnig', 'Please check Internet Connection');
       log("error:$e");
       log('catch bloc called');
     }
@@ -71,6 +72,7 @@ class PositionController extends GetxController {
   @override
   void onInit() {
     popupPositions();
+      getHomeHiveStorage();
     super.onInit();
   }
 
@@ -98,4 +100,28 @@ class PositionController extends GetxController {
       lastInspectonDates.value = pickDate;
     }
   }
+
+  final box = Hive.box<HomeLocalStorage>(boxname);
+  RxList<HomeLocalStorage> homeHiveModel = <HomeLocalStorage>[].obs;
+
+  getHomeHiveStorage() {
+    homeHiveModel.value = box.values.toList();
+  }
+
+  addSurveyItems(HomeLocalStorage hiveModel) {
+    box.add(hiveModel);
+    getHomeHiveStorage();
+  }
+
+  closeHiveData() {
+    box.clear();
+    getHomeHiveStorage();
+  }
+
+  updateInspection(int index, HomeLocalStorage hiveModel) {
+    box.putAt(index, hiveModel);
+    getHomeHiveStorage();
+  }
+
+ 
 }

@@ -3,16 +3,22 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:fps/controller/controller/home_controller.dart/distict_controller.dart';
 import 'package:fps/controller/service/dioclint/token/token.dart';
+import 'package:fps/model/home_models/home_local_storage/home_local_storage.dart';
 import 'package:fps/view/screens/navebar_screen/navbar.dart';
 import 'package:fps/view/screens/screen_splash/splash_screen.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:hive_flutter/adapters.dart';
 
-void main() async {
+Future<void> main() async {
+   WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
+  Hive.registerAdapter(HomeLocalStorageAdapter());
+  await Hive.openBox<HomeLocalStorage>(boxname);
   await GetStorage.init();
+
   runApp(const MyApp());
 }
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 

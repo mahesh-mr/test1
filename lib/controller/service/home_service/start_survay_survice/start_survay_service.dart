@@ -93,7 +93,7 @@ class StartSurvay {
     } catch (e) {
       print(e);
     } on SocketException {
-      throw "no net work";
+      throw Get.snackbar('Errorr', 'No Network');
     }
     return null;
   }

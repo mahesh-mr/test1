@@ -31,7 +31,7 @@ class DistrictDataService {
     } on DioError catch (e) {
       log('errorrrrr=====!');
       log("6656566565656556565  dist");
-      log("${e.response!.data}===========");
+      log("${e.response!.data}=========== dis no wok");
       log("${e.message}=fdsfg=fd");
     } catch (e) {
       log("$e");
@@ -78,7 +78,7 @@ class DistrictDataService {
         ),
       );
       FirkaModel firkaData = FirkaModel.fromJson(response.data);
-     // confirmOwner.confirmModel=(await confirmOwner.getConfirmService())!;
+ 
       //  log("${response.data}==============");
 
       return firkaData;
@@ -92,22 +92,4 @@ class DistrictDataService {
     }
     return null;
   }
-
-  // static allFPSListService() async {
-  //   //String? token = GetLocalStorage.getUserIdAndToken('token');
-  //   try {
-  //     var response =
-  //         await Dio().get('http://18.180.86.118:5000/api/v1/fps_reg_dealer');
-  //     AllFpsNumbersModel? model = AllFpsNumbersModel.fromJson(response.data);
-  //     print(response.data);
-  //     return model;
-  //   } on DioError catch (e) {
-  //     print(e.message);
-  //     print(e.response!.data);
-  //     print(e.type);
-  //     print(e);
-  //   } catch (e) {
-  //     print(e);
-  //   }
-  // }
 }

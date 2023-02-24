@@ -6,7 +6,7 @@ class CustomPageRoute extends PageRouteBuilder {
   final AxisDirection direction;
   CustomPageRoute({required this.route, this.direction = AxisDirection.up})
       : super(
-            transitionDuration: Duration(seconds: 1),
+            transitionDuration: const Duration(seconds: 2),
             pageBuilder: (context, animation, secondaryAnimation) => route);
   Widget buildTranditions(
     BuildContext context,
